@@ -1,3 +1,4 @@
 module.exports = {
-  app-title: 'contact',
+  appTitle: 'contact',
+  saltRuns: 10,
 };
