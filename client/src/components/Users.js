@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 
 const User = ({ user }) => (
-  <li>
-    { user.firstName } { user.lastName }
-    <ul>
-      <li>{ user.email }</li>
-      <li>{ user.phone }</li>
-      <li>{ user.address }</li>
-    </ul>
-  </li>
+  <div>
+    <h3> { user.firstName } { user.lastName } </h3>
+    <dl>
+      <dt>email</dt>
+      <dd>{ user.email }</dd>
+      <dt>phone</dt>
+      <dd>{ user.phone }</dd>
+      <dt>address</dt>
+      <dd>{ user.address }</dd>
+    </dl>
+  </div>
 );
 
 const userDataToComps = userData => 
