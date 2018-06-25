@@ -4,6 +4,10 @@ db = client.contactdb
 users = db.users
 
 if __name__ == "__main__":
+    print("Username: ")
+    username = input()
+    print("Password: ")
+    password = input()
     print("First name: ")
     firstName = input()
     print("Last name: ")

@@ -44,11 +44,12 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Contact</h1>
         </header>
         <Nav viewChangeFunction={ this.setView } titles={ Object.keys(this.state.views) }/>
-        { this.state.views[this.state.activeView]() }
+        <div id="view">
+          { this.state.views[this.state.activeView]() }
+        </div>
       </div>
     );
   }
