@@ -3,6 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import Users from './components/Users';
 import Nav from './components/Nav';
+import Login from './components/Login';
+import Register from './components/Register';
+import MyAccount from './components/MyAccount';
 
 class App extends Component {
   constructor(props) {
@@ -12,6 +15,9 @@ class App extends Component {
       data: {},
       views: {
         "Users": () => (<Users users={ this.state.data.users || [] } />),
+        "Login": () => (<Login />),
+        "Register": () => (<Register />),
+        "My Account": () => (<MyAccount user={ this.state.data.users[1] || {} } />),
         "Test": () => (<p>THIS IS A TEST</p>),
       },
     };
@@ -33,7 +39,6 @@ class App extends Component {
       )
     );
   }
-        //<Users users={this.state.data.users || []} />
 
   render() {
     return (
