@@ -3,8 +3,8 @@ var router = express.Router();
 var User = require('../models/user');
 
 
-router.get('/user/:userId', function(req, res, next) {
-  User.findById(req.params.userId, function(err, user) {
+router.get('/user/:username', function(req, res, next) {
+  User.findOne({username: req.params.username}, function(err, user) {
     if (err) {
       console.error(err);
       return next(err);
@@ -24,7 +24,7 @@ router.get('/user/:userId', function(req, res, next) {
   });
 });
 
-router.post('/user/:userId/update/:fieldName', function(req, res, next) {
+router.post('/user/:username/update/:fieldName', function(req, res, next) {
   if (!req.body)
     return next(req);
   const { value } = req.body;
@@ -39,8 +39,8 @@ router.post('/user/:userId/update/:fieldName', function(req, res, next) {
   }
   let update = {};
   update[fieldName] = value;
-  User.findByIdAndUpdate(
-    req.params.userId,
+  User.findOneAndUpdate(
+    {username: req.params.username},
     update,
     {new: true},
     function(err, user) {
@@ -64,34 +64,35 @@ router.post('/user/:userId/update/:fieldName', function(req, res, next) {
     });
 });
 
-router.post('/addContact/:subjectUsername/:objectUsername', function(req, res, next) {
+router.post('/user/:username/add_contact/:contactUsername', function(req, res, next) {
+  const { username, contactUsername } = req.params;
   User.findOne(
-    {username: req.params.objectUsername},
-    function (err, objectUser) {
+    {username: contactUsername},
+    function (err, contactUser) {
       if (err) {
         console.error(err);
         return next(err);
       }
-      if (objectUser) {
+      if (contactUser) {
         User.findOneAndUpdate(
-          {username: req.params.subjectUsername},
-          {$push: {contacts: objectUser.id}},
+          {username},
+          {$push: {contacts: contactUser._id}},
           {new: true},
-          function (err, subjectUser) {
+          function (err, user) {
             if (err) {
               console.error(err);
               return next(err);
             }
-            if (subjectUser) {
-              const { contacts } = subjectUser;
-              const payload = { contacts, name: subjectUser.fullName };
+            if (user) {
+              const { contacts } = user;
+              const payload = { contacts, name: user.fullName };
               return res.json(payload);
             } else {
-              return res.json({message: `Couldn't find ${req.params.subjectUsername}`});
+              return res.json({message: `Couldn't find ${username}`});
             }
           });
       } else {
-        return res.json({message: `Couldn't find ${req.params.objectUsername}`});
+        return res.json({message: `Couldn't find ${contactUsername}`});
       }
     });
 });
