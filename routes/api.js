@@ -64,5 +64,60 @@ router.post('/user/:userId/update/:fieldName', function(req, res, next) {
     });
 });
 
+router.post('/addContact/:subjectUsername/:objectUsername', function(req, res, next) {
+  User.findOne(
+    {username: req.params.objectUsername},
+    function (err, objectUser) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (objectUser) {
+        User.findOneAndUpdate(
+          {username: req.params.subjectUsername},
+          {$push: {contacts: objectUser.id}},
+          {new: true},
+          function (err, subjectUser) {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            if (subjectUser) {
+              const { contacts } = subjectUser;
+              const payload = { contacts, name: subjectUser.fullName };
+              return res.json(payload);
+            } else {
+              return res.json({message: `Couldn't find ${req.params.subjectUsername}`});
+            }
+          });
+      } else {
+        return res.json({message: `Couldn't find ${req.params.objectUsername}`});
+      }
+    });
+});
+
+router.get('/user/:username/contacts', function(req, res, next) {
+  User.findOne(
+    {username: req.params.username},
+    function(err, user) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (user) {
+        const { contacts } = user;
+        User.find({_id: {$in: contacts}}, function(err, friends) {
+          if (err) {
+            console.error(err);
+            return next(err);
+          }
+          const payload = { contacts: friends.map(friend => friend.username) };
+          res.json(payload);
+        });
+      } else {
+        return res.json({ message: `Couldn't find ${req.params.username}` });
+      }
+    });
+});
 
 module.exports = router;

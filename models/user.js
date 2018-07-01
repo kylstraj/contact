@@ -9,6 +9,7 @@ var userSchema = mongoose.Schema({
   email: String,
   address: String,
   phone: String,
+  contacts: [ mongoose.Schema.Types.ObjectId ],
   relationships: [ mongoose.Schema.Types.ObjectId ],
   passwordHash: String,
 });

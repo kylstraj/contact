@@ -22,5 +22,6 @@ if __name__ == "__main__":
             "lastName": lastName,
             "email": email,
             "phone": phone,
-            "address": address}
+            "address": address,
+            "username": username}
     users.insert_one(user)
