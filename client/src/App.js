@@ -17,7 +17,7 @@ class App extends Component {
         "Users": () => (<Users users={ this.state.data.users || [] } />),
         "Login": () => (<Login />),
         "Register": () => (<Register />),
-        "My Account": () => (<MyAccount user={ this.state.data.users[1] || {} } />),
+        "My Account": () => (<MyAccount user={ this.state.user || {} } />),
         "Test": () => (<p>THIS IS A TEST</p>),
       },
     };
@@ -28,6 +28,9 @@ class App extends Component {
     fetch('/home')
       .then(res => res.json())
       .then(data => this.setState({ data }));
+    fetch('/user')
+      .then(res => res.json())
+      .then(data => this.setState({ user: data.user }));
   }
 
   setView(title) {
