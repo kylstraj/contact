@@ -121,4 +121,45 @@ router.get('/user/:username/contacts', function(req, res, next) {
     });
 });
 
+router.get('/contact/:requester/:requestee', function(req, res, next) {
+  const { requester, requestee } = req.params;
+  User.findOne(
+    {username: requester},
+    function(err, user) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (user) {
+        const { contacts } = user;
+        User.findOne({username: requestee}, function(err, contact) {
+          if (err) {
+            console.error(err);
+            return next(err);
+          }
+          if (contact) {
+            let payload = {};
+            if (contacts.indexOf(contact._id) >= 0) {
+              const { address, email, phone } = contact;
+              payload = {
+                address,
+                email,
+                name: contact.fullName,
+                phone,
+              };
+            } else {
+              payload = {message: `${requestee} isn't one of ${requester}'s contacts`}
+            }
+            res.json(payload);
+          } else {
+            res.json({message: `Couldn't find ${requestee}`});
+          }
+        });
+      } else {
+        res.json({message: `Couldn't find ${requester}`});
+      }
+    });
+});
+
+
 module.exports = router;
