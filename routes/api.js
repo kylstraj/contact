@@ -76,37 +76,6 @@ router.post('/user/share_info/:contactUsername', function(req, res, next) {
       }
     });
 });
-  /*
-  User.findOne(
-    {username: contactUsername},
-    function (err, contactUser) {
-      if (err) {
-        console.error(err);
-        return next(err);
-      }
-      if (contactUser) {
-        User.findByIdAndUpdate(
-          res.locals.user._id,
-          {$push: {contacts: contactUser._id}},
-          {new: true},
-          function (err, user) {
-            if (err) {
-              console.error(err);
-              return next(err);
-            }
-            if (user) {
-              const { contacts } = user;
-              const payload = { contacts, name: user.fullName };
-              return res.json(payload);
-            } else {
-              return res.json({message: `Couldn't find ${res.locals.user.username}`});
-            }
-          });
-      } else {
-        return res.json({message: `Couldn't find ${contactUsername}`});
-      }
-    });
-    */
 
 router.post('/user/contacts', function(req, res, next) {
   const { user } = res.locals;
@@ -141,11 +110,42 @@ router.post('/user/contact/:requestee', function(req, res, next) {
           phone,
         };
       } else {
-        payload = {message: `${requestee} isn't one of ${user.username}'s contacts`}
+        payload = {error: `${requestee} isn't one of ${user.username}'s contacts`}
       }
       res.json(payload);
     } else {
-      res.json({message: `Couldn't find ${requestee}`});
+      res.json({error: `Couldn't find ${requestee}`});
+    }
+  });
+});
+
+router.post('/user/contact/:requestee/:fieldName', function(req, res, next) {
+  const { requestee, fieldName } = req.params;
+  const { user } = res.locals;
+  const { contacts } = user;
+  const validFields = [
+    'address',
+    'email',
+    'phone',
+  ];
+  if (validFields.indexOf(fieldName) < 0) {
+    return res.json({error: `${fieldName} is not a valid field`});
+  }
+  User.findOne({username: requestee}, function(err, contact) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
+    if (contact) {
+      let payload = {};
+      if (contacts.indexOf(contact._id) >= 0) {
+        payload[fieldName] = contact[fieldName];
+      } else {
+        payload = {error: `${requestee} isn't one of ${user.username}'s contacts`}
+      }
+      res.json(payload);
+    } else {
+      res.json({error: `Couldn't find ${requestee}`});
     }
   });
 });
