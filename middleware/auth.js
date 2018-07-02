@@ -2,7 +2,7 @@ var User = require('../models/user');
 var pwd = require('../private/pwd');
 
 module.exports = function(req, res, next) {
-  const { username, password } = req.query;
+  const { username, password } = req.body.credentials;
   User.findOne({username: username}, function(err, user) {
     if (err) {
       console.error(err);
