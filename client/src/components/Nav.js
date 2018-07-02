@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const NavButton = ({ onClick, title }) => (
-  <button onClick={ () => onClick(title) }>{ title }</button>
+  <button onClick={ () => onClick() }>{ title }</button>
 );
 
-const Nav = ({ viewChangeFunction, titles }) => (
+
+const Nav = ({ clicks, titles }) => (
   <nav>
-    { titles.map(title => <NavButton onClick={ viewChangeFunction } title={ title } />) }
+    { titles.map(title => <NavButton onClick={ clicks[title] } title={ title } />) }
   </nav>
 );
 
