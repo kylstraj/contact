@@ -55,8 +55,28 @@ router.post('/user/update/:fieldName', function(req, res, next) {
     });
 });
 
-router.post('/user/add_contact/:contactUsername', function(req, res, next) {
+router.post('/user/share_info/:contactUsername', function(req, res, next) {
   const { contactUsername } = req.params;
+  User.findOneAndUpdate(
+    {username: contactUsername},
+    {$push: {contacts: res.locals.user._id}},
+    function (err, friend) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (friend) {
+        res.json(
+          {success: `${res.locals.user.username} shared contact info with ${contactUsername}`}
+        );
+      } else {
+        res.json(
+          {error: `Couldn't find ${contactUsername}`}
+        );
+      }
+    });
+});
+  /*
   User.findOne(
     {username: contactUsername},
     function (err, contactUser) {
@@ -86,7 +106,7 @@ router.post('/user/add_contact/:contactUsername', function(req, res, next) {
         return res.json({message: `Couldn't find ${contactUsername}`});
       }
     });
-});
+    */
 
 router.post('/user/contacts', function(req, res, next) {
   const { user } = res.locals;
