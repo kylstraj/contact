@@ -1,4 +1,6 @@
 import pymongo
+import bcrypt
+import base64
 client = pymongo.MongoClient('mongodb://localhost:27017/')
 db = client.contactdb
 users = db.users
@@ -23,5 +25,6 @@ if __name__ == "__main__":
             "email": email,
             "phone": phone,
             "address": address,
-            "username": username}
+            "username": username,
+            "passwordHash": bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())}
     users.insert_one(user)

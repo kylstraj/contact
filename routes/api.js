@@ -1,9 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var pwd = require('../private/pwd');
 
-
-router.get('/user/:username', function(req, res, next) {
+router.get('/user', function(req, res, next) {
+  const { address, email, phone } = res.locals.user;
+  const payload = {
+    address,
+    email,
+    name: res.locals.user.fullName,
+    phone,
+  };
+  return res.json(payload);
+  /*
   User.findOne({username: req.params.username}, function(err, user) {
     if (err) {
       console.error(err);
@@ -21,7 +30,7 @@ router.get('/user/:username', function(req, res, next) {
     } else {
       return res.json({});
     }
-  });
+  });*/
 });
 
 router.post('/user/:username/update/:fieldName', function(req, res, next) {
@@ -121,7 +130,7 @@ router.get('/user/:username/contacts', function(req, res, next) {
     });
 });
 
-router.get('/contact/:requester/:requestee', function(req, res, next) {
+router.get('/user/:requester/contact/:requestee', function(req, res, next) {
   const { requester, requestee } = req.params;
   User.findOne(
     {username: requester},
