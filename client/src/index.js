@@ -8,7 +8,10 @@ import Users from './components/Users';
 import registerServiceWorker from './registerServiceWorker';
 import contactApp from './reducers/reducers';
 
-const store = createStore(contactApp);
+const store = createStore(
+  contactApp,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -17,3 +20,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 registerServiceWorker();
+export default store;

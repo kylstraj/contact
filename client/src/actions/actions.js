@@ -1,3 +1,4 @@
+export const FORM_FIELD_CHANGE = 'FORM_FIELD_CHANGE';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
@@ -10,6 +11,15 @@ export const SCREENS = {
   REGISTER: 'REGISTER',
   USER: 'USER',
 };
+
+export const formFieldChange = (form, field, value) => (
+  {
+    field,
+    form,
+    type: FORM_FIELD_CHANGE,
+    value,
+  }
+);
 
 export const loginFailure = (reason) => (
   {

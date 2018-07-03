@@ -10,7 +10,10 @@ import {
 import ContactView from '../components/ContactView';
 
 const mapStateToProps = state => (
-  {...state}
+  Object.assign(
+    {...state.topLevelReducer},
+    {...state.formsReducer},
+  )
 );
 
 const mapDispatchToProps = dispatch => (
@@ -25,6 +28,10 @@ const mapDispatchToProps = dispatch => (
       'About you': (user) => dispatch(setScreen(SCREENS.USER, {user})),
       'Logout': () => dispatch(logout()),
     },
+    onLoginAttempts: {
+      onLoginSuccess: ({username, password}) => dispatch(loginSuccess({username, password})),
+      onLoginFailure: (error) => dispatch(loginFailure(error)),
+    }
   }
 );
 
