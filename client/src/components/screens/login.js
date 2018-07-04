@@ -1,4 +1,5 @@
 import React from 'react';
+import { Field, reduxForm } from 'redux-form';
 import store from '../../index';
 import { loginSuccess, loginFailure } from '../../actions/actions';
 import FormContainer from '../../containers/FormContainer';
@@ -31,35 +32,29 @@ const onClickMaker = (username, password, onLoginAttempts) => (
   }
 );
 
+let LoginForm = props => {
+  const { handleSubmit } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <p>
+        <label htmlFor='username'>Username: </label>
+        <Field name='username' component='input' type='text'/>
+      </p>
+      <p>
+        <label htmlFor='password'>Password: </label>
+        <Field name='password' component='input' type='password'/>
+      </p>
+      <button type='submit'>Login</button>
+    </form>
+  );
+};
+
+LoginForm = reduxForm({
+  form: 'login'
+})(LoginForm);
+
 const LoginScreen = ({onLoginAttempts}) => (
-  <FormContainer>
-    <p>
-      <label htmlFor='username'>username: </label>
-      <input name='username'></input>
-    </p>
-  </FormContainer>
-  /*
-  <form>
-    <p>
-      <label htmlFor='username'>User Name: </label>
-      <input name='username' id='username'></input>
-    </p>
-    <p>
-      <label htmlFor='password'>Password: </label>
-      <input name='password' type='password' id='password'></input>
-    </p>
-    <p>
-      <button 
-        type='submit' 
-        onClick={onClickMaker(
-          'abramowitza',
-          'password',
-          onLoginAttempts,
-        )}>
-        Log In
-     </button>
-    </p>
-  </form>*/
+  <LoginForm onSubmit={data => loginAttempt(data.username, data.password, onLoginAttempts)}/>
 );
 
 export default LoginScreen;

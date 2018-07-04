@@ -11,8 +11,8 @@ import ContactView from '../components/ContactView';
 
 const mapStateToProps = state => (
   Object.assign(
-    {...state.topLevelReducer},
-    {...state.formsReducer},
+    {...state.main},
+    {...state.form},
   )
 );
 
