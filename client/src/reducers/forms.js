@@ -18,6 +18,7 @@ const formsReducer = function(state = initialState, action) {
   switch (action.type) {
     case FORM_FIELD_CHANGE:
       const update = {};
+      update[action.form] = {...state[action.form]};
       update[action.form][action.field] = action.value;
       return Object.assign(
         {},

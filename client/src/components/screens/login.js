@@ -1,6 +1,8 @@
 import React from 'react';
 import store from '../../index';
 import { loginSuccess, loginFailure } from '../../actions/actions';
+import FormContainer from '../../containers/FormContainer';
+import Form from '../Form';
 
 const loginAttempt = (username, password, onLoginAttempts) => {
   const { onLoginSuccess, onLoginFailure } = onLoginAttempts;
@@ -30,6 +32,8 @@ const onClickMaker = (username, password, onLoginAttempts) => (
 );
 
 const LoginScreen = ({onLoginAttempts}) => (
+  <FormContainer formName='loginForm'/>
+  /*
   <form>
     <p>
       <label htmlFor='username'>User Name: </label>
@@ -50,7 +54,7 @@ const LoginScreen = ({onLoginAttempts}) => (
         Log In
      </button>
     </p>
-  </form>
+  </form>*/
 );
 
 export default LoginScreen;
