@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   credentials: {},
-  data: {},
+  user: {},
   loginFlash: '',
   screen: SCREENS.HOME,
 };
@@ -20,7 +20,7 @@ const topLevelReducer = function(state = initialState, action) {
         {},
         state,
         {
-          data: action.data,
+          loginFlash: '',
           screen: action.screen,
         },
       );
@@ -38,8 +38,10 @@ const topLevelReducer = function(state = initialState, action) {
         {},
         state,
         {
+          loginFlash: '',
           credentials: action.credentials,
           screen: SCREENS.USER,
+          user: action.user,
         },
       );
     case LOGOUT:
@@ -49,6 +51,7 @@ const topLevelReducer = function(state = initialState, action) {
         {
           credentials: {},
           screen: SCREENS.HOME,
+          user: {},
         },
       );
     default:

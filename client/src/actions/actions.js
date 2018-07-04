@@ -28,10 +28,11 @@ export const loginFailure = (reason) => (
   }
 );
 
-export const loginSuccess = (credentials) => (
+export const loginSuccess = (credentials, user) => (
   {
     credentials,
     type: LOGIN_SUCCESS,
+    user,
   }
 );
 

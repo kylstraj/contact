@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 
 const FactCard = ({ fact, title }) => (
@@ -18,15 +17,14 @@ const cardTitles = {
   "Your address": "address",
 };
 
-const UserScreen = ({ data }) => {
-  const user = data.user;
-  if (user !== undefined) {
+const UserScreen = ({ user }) => {
+  if (user.name !== undefined) {
     const cards = Object.keys(cardTitles).map(
-      key => <FactCard fact={ user[cardTitles[key]] } title={ key } />
+      key => <FactCard fact={ user[cardTitles[key]] } title={ key } key={key}/>
     );
     return (
       <div>
-        <h2>{ user.firstName } { user.lastName }</h2>
+        <h2>{ user.name }</h2>
         { cards }
       </div>
     );

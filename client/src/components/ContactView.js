@@ -10,10 +10,10 @@ import { SCREENS } from '../actions/actions';
 
 const Header = (props) => <h1>Contact</h1>;
 
-const renderScreen = (screen, data, onLoginAttempts) => {
+const renderScreen = (screen, user, onLoginAttempts) => {
   switch (screen) {
     case SCREENS.CONTACT:
-      return (<ContactScreen data={data}/>);
+      return (<ContactScreen data={user}/>);
     case SCREENS.HOME:
       return (<HomeScreen/>);
     case SCREENS.LOGIN:
@@ -21,7 +21,7 @@ const renderScreen = (screen, data, onLoginAttempts) => {
     case SCREENS.REGISTER:
       return (<RegisterScreen/>);
     case SCREENS.USER:
-      return (<UserScreen data={data}/>);
+      return (<UserScreen user={user}/>);
     default:
       return (<ErrorScreen error={'404'}/>);
   }
@@ -35,20 +35,23 @@ const screenTitles = [
   'Logout',
 ];
 
-const ContactView = props => (
-  <div>
-    <Header/>
-    <Nav clicks={props.clicks} 
-      titles={screenTitles}/>
-    {
-      renderScreen(
-        props.screen, 
-        props.data, 
-        props.onLoginAttempts,
-      )
-    }
-    <footer>{JSON.stringify(props)}</footer>
-  </div>
-);
+const ContactView = props => {
+  const {main, form} = props;
+  return (
+    <div>
+      <Header/>
+      <Nav clicks={props.clicks} 
+        titles={screenTitles}/>
+      {
+        renderScreen(
+          main.screen, 
+          main.user,
+          props.onLoginAttempts,
+        )
+      }
+      <footer>{JSON.stringify({main, form})}</footer>
+    </div>
+  );
+};
 
 export default ContactView;

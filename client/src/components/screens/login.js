@@ -20,7 +20,7 @@ const loginAttempt = (username, password, onLoginAttempts) => {
     .then(res => res.json())
     .then(
       res => res.address 
-        ? onLoginSuccess({username, password})
+        ? onLoginSuccess({username, password}, res)
         : onLoginFailure(res.error)
     );
 };
