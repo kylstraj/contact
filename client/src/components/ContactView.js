@@ -10,14 +10,16 @@ import { SCREENS } from '../actions/actions';
 
 const Header = (props) => <h1>Contact</h1>;
 
-const renderScreen = (screen, user, onLoginAttempts) => {
+const renderScreen = state => {
+  const { screen, user, loginFlash } = state.main;
+  const { onLoginAttempts } = state;
   switch (screen) {
     case SCREENS.CONTACT:
       return (<ContactScreen data={user}/>);
     case SCREENS.HOME:
       return (<HomeScreen/>);
     case SCREENS.LOGIN:
-      return (<LoginScreen onLoginAttempts={onLoginAttempts}/>);
+      return (<LoginScreen loginFlash={loginFlash} onLoginAttempts={onLoginAttempts}/>);
     case SCREENS.REGISTER:
       return (<RegisterScreen/>);
     case SCREENS.USER:
@@ -36,20 +38,13 @@ const screenTitles = [
 ];
 
 const ContactView = props => {
-  const {main, form} = props;
   return (
     <div>
       <Header/>
       <Nav clicks={props.clicks} 
         titles={screenTitles}/>
-      {
-        renderScreen(
-          main.screen, 
-          main.user,
-          props.onLoginAttempts,
-        )
-      }
-      <footer>{JSON.stringify({main, form})}</footer>
+      { renderScreen(props) }
+      <footer>{JSON.stringify(props)}</footer>
     </div>
   );
 };

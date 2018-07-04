@@ -50,8 +50,11 @@ LoginForm = reduxForm({
   form: 'login'
 })(LoginForm);
 
-const LoginScreen = ({onLoginAttempts}) => (
-  <LoginForm onSubmit={data => loginAttempt(data.username, data.password, onLoginAttempts)}/>
+const LoginScreen = ({onLoginAttempts, loginFlash}) => (
+  <div>
+    <LoginForm onSubmit={data => loginAttempt(data.username, data.password, onLoginAttempts)}/>
+    <p>{loginFlash}</p>
+  </div>
 );
 
 export default LoginScreen;
