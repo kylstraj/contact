@@ -9,11 +9,14 @@ const renderFields = (formName, fieldValues, onFieldUpdate) =>
         onChange={(event) => onFieldUpdate(fieldName, event.target.value)}></input>
     </p>));
 
+/*
 const Form = ({formName, fieldValues, onFieldUpdate}) => (
   <form>
     {renderFields(formName, fieldValues, onFieldUpdate)}
     <button type='submit'>Submit</button>
   </form>
-);
+);*/
+
+const Form = props => <form>{props.children}</form>;
 
 export default Form;

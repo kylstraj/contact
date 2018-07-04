@@ -8,6 +8,7 @@ import Form from '../components/Form';
 const mapStateToProps = (state, ownProps) => (
   {
     fieldValues: state.formsReducer[ownProps.formName],
+    children: ownProps.children,
   }
 );
 

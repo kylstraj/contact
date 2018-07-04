@@ -32,7 +32,12 @@ const onClickMaker = (username, password, onLoginAttempts) => (
 );
 
 const LoginScreen = ({onLoginAttempts}) => (
-  <FormContainer formName='loginForm'/>
+  <FormContainer>
+    <p>
+      <label htmlFor='username'>username: </label>
+      <input name='username'></input>
+    </p>
+  </FormContainer>
   /*
   <form>
     <p>
