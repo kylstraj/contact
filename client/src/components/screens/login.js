@@ -1,9 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import store from '../../index';
 import { loginSuccess, loginFailure } from '../../actions/actions';
-import FormContainer from '../../containers/FormContainer';
-import Form from '../Form';
 
 const loginAttempt = (username, password, onLoginAttempts) => {
   const { onLoginSuccess, onLoginFailure } = onLoginAttempts;
