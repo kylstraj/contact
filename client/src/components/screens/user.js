@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ContactCard from '../ContactCard';
 
 const FactCard = ({ fact, title }) => (
   <div>
@@ -17,7 +18,27 @@ const cardTitles = {
   "Your address": "address",
 };
 
-const UserScreen = ({ user }) => {
+class Contacts extends Component {
+  componentDidMount() {
+    const { credentials, fetchContacts } = this.props;
+    fetchContacts(credentials);
+  }
+
+  renderCards(contacts) {
+    return contacts.map((contact, idx) => 
+      <ContactCard contact={contact} expanded={true} key={idx}/>);
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderCards(this.props.contacts)}
+      </div>
+    );
+  }
+};
+
+const UserScreen = ({ credentials, contacts, fetchContacts, user }) => {
   if (user.name !== undefined) {
     const cards = Object.keys(cardTitles).map(
       key => <FactCard fact={ user[cardTitles[key]] } title={ key } key={key}/>
@@ -26,6 +47,7 @@ const UserScreen = ({ user }) => {
       <div>
         <h2>{ user.name }</h2>
         { cards }
+        <Contacts credentials={credentials} contacts={contacts} fetchContacts={fetchContacts}/>
       </div>
     );
   } else {

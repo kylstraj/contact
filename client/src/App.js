@@ -7,7 +7,7 @@ import ContactContainer from './containers/ContactContainer';
 class App extends Component {
   render() {
     return (
-      <ContactContainer />
+      <ContactContainer dev={false}/>
     );
   }
 }

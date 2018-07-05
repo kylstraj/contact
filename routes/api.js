@@ -90,6 +90,25 @@ router.post('/user/contacts', function(req, res, next) {
   });
 });
 
+router.post('/user/contacts/verbose', function(req, res, next) {
+  const { user } = res.locals;
+  const { contacts } = user;
+  User.find({_id: {$in: contacts}}, function(err, friends) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
+    const payload = { contacts: friends.map(friend => ({
+      address: friend.address,
+      email: friend.email,
+      name: friend.fullName,
+      phone: friend.phone,
+    })) };
+    res.json(payload);
+  });
+});
+
+
 router.post('/user/contact/:requestee', function(req, res, next) {
   const { requestee } = req.params;
   const { user } = res.locals;

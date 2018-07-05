@@ -3,6 +3,8 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
 export const SET_SCREEN = 'SET_SCREEN';
+export const START_FETCH_CONTACTS = 'START_FETCH_CONTACTS';
+export const CONTACTS_FETCHED = 'CONTACTS_FETCHED';
 
 export const SCREENS = {
   CONTACT: 'CONTACT',
@@ -47,5 +49,18 @@ export const setScreen = (screen, data = {}) => (
     data,
     screen,
     type: SET_SCREEN,
+  }
+);
+
+export const startFetchContacts = () => (
+  {
+    type: START_FETCH_CONTACTS,
+  }
+);
+
+export const contactsFetched = (contacts) => (
+  {
+    contacts,
+    type: CONTACTS_FETCHED,
   }
 );

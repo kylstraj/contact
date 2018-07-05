@@ -11,8 +11,8 @@ import { SCREENS } from '../actions/actions';
 const Header = (props) => <h1>Contact</h1>;
 
 const renderScreen = state => {
-  const { screen, user, loginFlash } = state.main;
-  const { onLoginAttempts } = state;
+  const { credentials, screen, user, loginFlash, contacts } = state.main;
+  const { onLoginAttempts, fetchContacts } = state;
   switch (screen) {
     case SCREENS.CONTACT:
       return (<ContactScreen data={user}/>);
@@ -23,7 +23,14 @@ const renderScreen = state => {
     case SCREENS.REGISTER:
       return (<RegisterScreen/>);
     case SCREENS.USER:
-      return (<UserScreen user={user}/>);
+      return (
+        <UserScreen 
+          user={user} 
+          credentials={credentials} 
+          contacts={contacts} 
+          fetchContacts={fetchContacts}
+        />
+      );
     default:
       return (<ErrorScreen error={'404'}/>);
   }
@@ -39,13 +46,24 @@ const screenTitles = [
 
 const ContactView = props => {
   return (
-    <div>
-      <Header/>
-      <Nav clicks={props.clicks} 
-        titles={screenTitles}/>
-      { renderScreen(props) }
-      <footer>{JSON.stringify(props)}</footer>
-    </div>
+    props.dev
+      ? (
+        <div>
+          <Header/>
+          <Nav clicks={props.clicks} 
+            titles={screenTitles}/>
+          { renderScreen(props) }
+          <footer>{JSON.stringify(props)}</footer>
+        </div>
+        )
+      : (
+        <div>
+          <Header/>
+          <Nav clicks={props.clicks} 
+            titles={screenTitles}/>
+          { renderScreen(props) }
+        </div>
+        )
   );
 };
 

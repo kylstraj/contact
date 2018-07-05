@@ -1,13 +1,17 @@
 import { 
+  CONTACTS_FETCHED,
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
   LOGOUT,
   SET_SCREEN, 
+  START_FETCH_CONTACTS,
   SCREENS 
 } from '../actions/actions';
 
 const initialState = {
+  fetchingContacts: false,
   credentials: {},
+  contacts: [],
   user: {},
   loginFlash: '',
   screen: SCREENS.HOME,
@@ -52,6 +56,23 @@ const topLevelReducer = function(state = initialState, action) {
           credentials: {},
           screen: SCREENS.HOME,
           user: {},
+        },
+      );
+    case START_FETCH_CONTACTS:
+      return Object.assign(
+        {},
+        state,
+        {
+          fetchingContacts: true,
+        },
+      );
+    case CONTACTS_FETCHED:
+      return Object.assign(
+        {},
+        state,
+        {
+          fetchingContacts: false,
+          contacts: action.contacts,
         },
       );
     default:
