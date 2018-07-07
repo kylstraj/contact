@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import ContactCard from '../ContactCard';
 
-const FactCard = ({ fact, title, onSubmit }) => (
+const FactCard = ({ fact, title, onSubmit, inFlux }) => (
   <form onSubmit={onSubmit}>
     <p>
-      { title }: { fact }
+      { title }: { inFlux ? 'Updating...' : fact }
     </p>
     <p>
       <button type='submit'>Change</button>
@@ -13,11 +13,11 @@ const FactCard = ({ fact, title, onSubmit }) => (
   </form>
 );
 
-let EditCard = ({ fact, title, fieldName, handleSubmit }) => (
+let EditCard = ({ fact, title, fieldName, handleSubmit, user }) => (
   <form onSubmit={handleSubmit}>
     <p>
       <label htmlFor={title}>{title}: </label>
-      <Field name={fieldName} component='input' type='text'/>
+      <Field name={fieldName} component='input' type='text' value={user[fieldName]}/>
     </p>
     <p>
       <button>Save</button>
@@ -60,6 +60,7 @@ const UserScreen = props => {
     contacts,
     credentials,
     editFormsOpen,
+    fieldsInFlux,
     user,
   } = props;
   const {
@@ -73,6 +74,7 @@ const UserScreen = props => {
         !editFormsOpen[key]
           ? <FactCard 
               fact={ user[key] } 
+              inFlux={ fieldsInFlux[key] }
               title={ cardTitles[key] } 
               key={ key }
               onSubmit={ () => onEditButtonClick(key) }
@@ -82,6 +84,7 @@ const UserScreen = props => {
               title={ cardTitles[key] } 
               key={ key }
               fieldName={ key }
+              user={ user }
               onSubmit={ data => 
                   onSaveButtonClick(key, data[key], credentials) 
               }/>

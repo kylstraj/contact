@@ -15,6 +15,7 @@ const mapStateToProps = state => (
     contacts: state.main.contacts,
     credentials: state.main.credentials,
     editFormsOpen: state.userScreen.editFormsOpen,
+    fieldsInFlux: state.main.fieldsInFlux,
     user: state.main.user,
   }
 );
@@ -53,7 +54,7 @@ const mapDispatchToProps = dispatch => (
         })
         .then(res => res.json())
         .then(user => {
-          dispatch(infoEdited(user));
+          dispatch(infoEdited(field, user));
           return user;
         });
     },

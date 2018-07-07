@@ -34,8 +34,9 @@ export const formFieldChange = (form, field, value) => (
   }
 );
 
-export const infoEdited = user => (
+export const infoEdited = (field, user) => (
   {
+    field,
     type: INFO_EDITED,
     user,
   }

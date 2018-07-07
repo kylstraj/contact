@@ -5,12 +5,18 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   SET_SCREEN, 
+  START_EDIT_INFO,
   START_FETCH_CONTACTS,
   SCREENS 
 } from '../actions/actions';
 
 const initialState = {
   fetchingContacts: false,
+  fieldsInFlux: {
+    address: false,
+    email: false,
+    phone: false,
+  },
   credentials: {},
   contacts: [],
   user: {},
@@ -19,6 +25,7 @@ const initialState = {
 };
 
 const topLevelReducer = function(state = initialState, action) {
+  let fieldsInFluxUpdate = {};
   switch (action.type) {
     case SET_SCREEN:
       return Object.assign(
@@ -30,10 +37,16 @@ const topLevelReducer = function(state = initialState, action) {
         },
       );
     case INFO_EDITED:
+      fieldsInFluxUpdate[action.field] = false;
       return Object.assign(
         {},
         state,
         {
+          fieldsInFlux: Object.assign(
+            {},
+            state.fieldsInFlux,
+            fieldsInFluxUpdate,
+          ),
           user: action.user,
         },
       );
@@ -65,6 +78,19 @@ const topLevelReducer = function(state = initialState, action) {
           credentials: {},
           screen: SCREENS.HOME,
           user: {},
+        },
+      );
+    case START_EDIT_INFO:
+      fieldsInFluxUpdate[action.field] = true;
+      return Object.assign(
+        {},
+        state,
+        {
+          fieldsInFlux: Object.assign(
+            {},
+            state.fieldsInFlux,
+            fieldsInFluxUpdate,
+          ),
         },
       );
     case START_FETCH_CONTACTS:
