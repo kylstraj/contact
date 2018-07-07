@@ -20,6 +20,7 @@ const initialState = {
   credentials: {},
   contacts: [],
   user: {},
+  loggedIn: false,
   loginFlash: '',
   screen: SCREENS.HOME,
 };
@@ -64,6 +65,7 @@ const topLevelReducer = function(state = initialState, action) {
         {},
         state,
         {
+          loggedIn: true,
           loginFlash: '',
           credentials: action.credentials,
           screen: SCREENS.USER,
@@ -77,6 +79,7 @@ const topLevelReducer = function(state = initialState, action) {
         {
           contacts: [],
           credentials: {},
+          loggedIn: false,
           screen: SCREENS.HOME,
           user: {},
         },

@@ -17,12 +17,14 @@ const ContactCard = ({contact, isOpen, onContactClick}) =>
       );
 
 const ContactsScreen = ({contacts, contactsOpen, onContactClick}) => 
-  contacts.map(contact =>
-    <ContactCard 
-      key={contact.username} 
-      contact={contact} 
-      isOpen={contactsOpen[contact.username]}
-      onContactClick={onContactClick}
-    />);
+  contacts.length === 0
+    ? <h2>You have no contacts</h2>
+    : contacts.map(contact =>
+      <ContactCard 
+        key={contact.username} 
+        contact={contact} 
+        isOpen={contactsOpen[contact.username]}
+        onContactClick={onContactClick}
+      />);
 
 export default ContactsScreen;

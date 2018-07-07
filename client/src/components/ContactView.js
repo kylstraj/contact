@@ -29,7 +29,15 @@ const renderScreen = state => {
   }
 };
 
-const screenTitles = [
+const screenTitlesDefault = [
+  'Home',
+  'About you',
+  'Login',
+  'Register',
+  'Logout',
+];
+
+const screenTitlesLoggedIn = [
   'Home',
   'Contacts',
   'About you',
@@ -45,7 +53,7 @@ const ContactView = props => {
         <div>
           <Header/>
           <Nav clicks={props.clicks} 
-            titles={screenTitles}/>
+            titles={props.main.user !== {} ? screenTitlesLoggedIn : screenTitlesDefault}/>
           { renderScreen(props) }
           <footer>{JSON.stringify(props)}</footer>
         </div>
@@ -54,7 +62,7 @@ const ContactView = props => {
         <div>
           <Header/>
           <Nav clicks={props.clicks} 
-            titles={screenTitles}/>
+            titles={props.main.loggedIn ? screenTitlesLoggedIn : screenTitlesDefault}/>
           { renderScreen(props) }
         </div>
         )
