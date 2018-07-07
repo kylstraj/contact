@@ -10,18 +10,15 @@ if __name__ == "__main__":
     username = input()
     print("Password: ")
     password = input()
-    print("First name: ")
-    firstName = input()
-    print("Last name: ")
-    lastName = input()
+    print("Name: ")
+    name = input()
     print("Email: ")
     email = input()
     print("Phone: ")
     phone = input()
     print("Address: ")
     address = input()
-    user = {"firstName": firstName,
-            "lastName": lastName,
+    user = {"fullName": name,
             "email": email,
             "phone": phone,
             "address": address,

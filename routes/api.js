@@ -171,4 +171,25 @@ router.post('/user/contact/:requestee/:fieldName', function(req, res, next) {
   });
 });
 
+router.post('/search_users/:name', function(req, res, next) {
+  const { name } = req.params;
+  const nameRegEx = new RegExp(name, 'i');
+  User.find({ fullName: nameRegEx }, 'fullName username', function(err, users) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
+    if (users) {
+      const payload = users.map(user =>
+        ({
+          name: user.fullName,
+          username: user.username,
+        }));
+      return res.json(payload);
+    } else {
+      return res.json([]);
+    }
+  });
+});
+
 module.exports = router;
