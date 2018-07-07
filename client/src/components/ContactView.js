@@ -3,7 +3,7 @@ import ErrorScreen from './screens/error';
 import HomeScreen from './screens/home';
 import LoginScreen from './screens/login';
 import RegisterScreen from './screens/register';
-import UserScreen from './screens/user';
+import UserScreenContainer from '../containers/UserScreenContainer';
 import ContactScreen from './screens/contact';
 import Nav from './Nav';
 import { SCREENS } from '../actions/actions';
@@ -23,14 +23,7 @@ const renderScreen = state => {
     case SCREENS.REGISTER:
       return (<RegisterScreen/>);
     case SCREENS.USER:
-      return (
-        <UserScreen 
-          user={user} 
-          credentials={credentials} 
-          contacts={contacts} 
-          fetchContacts={fetchContacts}
-        />
-      );
+      return (<UserScreenContainer/>);
     default:
       return (<ErrorScreen error={'404'}/>);
   }

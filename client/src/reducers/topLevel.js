@@ -1,5 +1,6 @@
 import { 
   CONTACTS_FETCHED,
+  INFO_EDITED,
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
   LOGOUT,
@@ -26,6 +27,14 @@ const topLevelReducer = function(state = initialState, action) {
         {
           loginFlash: '',
           screen: action.screen,
+        },
+      );
+    case INFO_EDITED:
+      return Object.assign(
+        {},
+        state,
+        {
+          user: action.user,
         },
       );
     case LOGIN_FAILURE:

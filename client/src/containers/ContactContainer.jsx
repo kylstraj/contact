@@ -35,23 +35,6 @@ const mapDispatchToProps = dispatch => (
       onLoginSuccess: ({username, password}, user) => dispatch(loginSuccess({username, password}, user)),
       onLoginFailure: (error) => dispatch(loginFailure(error)),
     },
-    fetchContacts: (credentials) => {
-      dispatch(startFetchContacts());
-      return fetch('/api/user/contacts/verbose',
-        {
-          body: JSON.stringify({credentials}),
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-        })
-        .then(res => res.json())
-        .then(res => {
-          dispatch(contactsFetched(res.contacts));
-          return res.contacts;
-        });
-    },
   }
 );
 

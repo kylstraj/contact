@@ -1,21 +1,38 @@
 import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
 import ContactCard from '../ContactCard';
 
-const FactCard = ({ fact, title }) => (
-  <div>
+const FactCard = ({ fact, title, onSubmit }) => (
+  <form onSubmit={onSubmit}>
     <p>
       { title }: { fact }
     </p>
     <p>
-      <button>Change</button>
+      <button type='submit'>Change</button>
     </p>
-  </div>
+  </form>
 );
 
+let EditCard = ({ fact, title, fieldName, handleSubmit }) => (
+  <form onSubmit={handleSubmit}>
+    <p>
+      <label htmlFor={title}>{title}: </label>
+      <Field name={fieldName} component='input' type='text'/>
+    </p>
+    <p>
+      <button>Save</button>
+    </p>
+  </form>
+);
+
+EditCard = reduxForm({
+  form: 'editCard'
+})(EditCard);
+
 const cardTitles = {
-  "Your email": "email",
-  "Your phone number": "phone",
-  "Your address": "address",
+  address: "Your address",
+  email: "Your email",
+  phone: "Your phone number",
 };
 
 class Contacts extends Component {
@@ -38,10 +55,36 @@ class Contacts extends Component {
   }
 };
 
-const UserScreen = ({ credentials, contacts, fetchContacts, user }) => {
+const UserScreen = props => {
+  const {
+    contacts,
+    credentials,
+    editFormsOpen,
+    user,
+  } = props;
+  const {
+    fetchContacts,
+    onEditButtonClick,
+    onSaveButtonClick,
+  } = props;
   if (user.name !== undefined) {
-    const cards = Object.keys(cardTitles).map(
-      key => <FactCard fact={ user[cardTitles[key]] } title={ key } key={key}/>
+    const cards = Object.keys(editFormsOpen).map(
+      key => 
+        !editFormsOpen[key]
+          ? <FactCard 
+              fact={ user[key] } 
+              title={ cardTitles[key] } 
+              key={ key }
+              onSubmit={ () => onEditButtonClick(key) }
+            />
+          : <EditCard 
+              fact={ user[cardTitles[key]] } 
+              title={ cardTitles[key] } 
+              key={ key }
+              fieldName={ key }
+              onSubmit={ data => 
+                  onSaveButtonClick(key, data[key], credentials) 
+              }/>
     );
     return (
       <div>

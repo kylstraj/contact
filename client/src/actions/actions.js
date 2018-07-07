@@ -1,10 +1,14 @@
+export const CLOSE_EDIT_INFO_FORM = 'CLOSE_EDIT_INFO_FORM';
+export const CONTACTS_FETCHED = 'CONTACTS_FETCHED';
 export const FORM_FIELD_CHANGE = 'FORM_FIELD_CHANGE';
+export const INFO_EDITED = 'INFO_EDITED';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
+export const OPEN_EDIT_INFO_FORM = 'OPEN_EDIT_INFO_FORM';
 export const SET_SCREEN = 'SET_SCREEN';
+export const START_EDIT_INFO = 'START_EDIT_INFO';
 export const START_FETCH_CONTACTS = 'START_FETCH_CONTACTS';
-export const CONTACTS_FETCHED = 'CONTACTS_FETCHED';
 
 export const SCREENS = {
   CONTACT: 'CONTACT',
@@ -14,12 +18,26 @@ export const SCREENS = {
   USER: 'USER',
 };
 
+export const closeEditInfoForm = field => (
+  {
+    field,
+    type: CLOSE_EDIT_INFO_FORM,
+  }
+);
+
 export const formFieldChange = (form, field, value) => (
   {
     field,
     form,
     type: FORM_FIELD_CHANGE,
     value,
+  }
+);
+
+export const infoEdited = user => (
+  {
+    type: INFO_EDITED,
+    user,
   }
 );
 
@@ -44,11 +62,27 @@ export const logout = () => (
   }
 );
 
+export const openEditInfoForm = field => (
+  {
+    field,
+    type: OPEN_EDIT_INFO_FORM,
+  }
+);
+
+
 export const setScreen = (screen, data = {}) => (
   {
     data,
     screen,
     type: SET_SCREEN,
+  }
+);
+
+export const startEditInfo = (field, value) => (
+  {
+    field,
+    type: START_EDIT_INFO,
+    value,
   }
 );
 
