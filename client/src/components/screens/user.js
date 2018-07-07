@@ -13,11 +13,12 @@ const FactCard = ({ fact, title, onSubmit, inFlux }) => (
   </form>
 );
 
+
 let EditCard = ({ fact, title, fieldName, handleSubmit, user }) => (
   <form onSubmit={handleSubmit}>
     <p>
       <label htmlFor={title}>{title}: </label>
-      <Field name={fieldName} component='input' type='text' value={user[fieldName]}/>
+      <Field name={fieldName} component='input' type='text' />
     </p>
     <p>
       <button>Save</button>
