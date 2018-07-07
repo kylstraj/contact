@@ -9,9 +9,10 @@ export const OPEN_EDIT_INFO_FORM = 'OPEN_EDIT_INFO_FORM';
 export const SET_SCREEN = 'SET_SCREEN';
 export const START_EDIT_INFO = 'START_EDIT_INFO';
 export const START_FETCH_CONTACTS = 'START_FETCH_CONTACTS';
+export const TOGGLE_CONTACT_OPEN = 'TOGGLE_CONTACT_OPEN';
 
 export const SCREENS = {
-  CONTACT: 'CONTACT',
+  CONTACTS: 'CONTACTS',
   HOME: 'HOME',
   LOGIN: 'LOGIN',
   REGISTER: 'REGISTER',
@@ -97,5 +98,12 @@ export const contactsFetched = (contacts) => (
   {
     contacts,
     type: CONTACTS_FETCHED,
+  }
+);
+
+export const toggleContactOpen = contact => (
+  {
+    contact,
+    type: TOGGLE_CONTACT_OPEN,
   }
 );

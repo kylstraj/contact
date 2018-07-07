@@ -75,6 +75,7 @@ const topLevelReducer = function(state = initialState, action) {
         {},
         state,
         {
+          contacts: [],
           credentials: {},
           screen: SCREENS.HOME,
           user: {},

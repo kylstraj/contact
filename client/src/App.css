@@ -33,3 +33,10 @@ nav button {
 #view {
   text-align: left;
 }
+
+.contact-card {
+  border: 1px solid black;
+  width: 300px;
+  margin: 16px;
+  padding: 10px;
+}

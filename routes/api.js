@@ -103,6 +103,7 @@ router.post('/user/contacts/verbose', function(req, res, next) {
       email: friend.email,
       name: friend.fullName,
       phone: friend.phone,
+      username: friend.username,
     })) };
     res.json(payload);
   });
@@ -127,6 +128,7 @@ router.post('/user/contact/:requestee', function(req, res, next) {
           email,
           name: contact.fullName,
           phone,
+          username,
         };
       } else {
         payload = {error: `${requestee} isn't one of ${user.username}'s contacts`}

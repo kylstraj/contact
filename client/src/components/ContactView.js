@@ -3,8 +3,8 @@ import ErrorScreen from './screens/error';
 import HomeScreen from './screens/home';
 import LoginScreen from './screens/login';
 import RegisterScreen from './screens/register';
+import ContactsScreenContainer from '../containers/ContactsScreenContainer';
 import UserScreenContainer from '../containers/UserScreenContainer';
-import ContactScreen from './screens/contact';
 import Nav from './Nav';
 import { SCREENS } from '../actions/actions';
 
@@ -14,8 +14,6 @@ const renderScreen = state => {
   const { credentials, screen, user, loginFlash, contacts } = state.main;
   const { onLoginAttempts, fetchContacts } = state;
   switch (screen) {
-    case SCREENS.CONTACT:
-      return (<ContactScreen data={user}/>);
     case SCREENS.HOME:
       return (<HomeScreen/>);
     case SCREENS.LOGIN:
@@ -24,6 +22,8 @@ const renderScreen = state => {
       return (<RegisterScreen/>);
     case SCREENS.USER:
       return (<UserScreenContainer/>);
+    case SCREENS.CONTACTS:
+      return (<ContactsScreenContainer contacts={contacts}/>);
     default:
       return (<ErrorScreen error={'404'}/>);
   }
@@ -31,6 +31,7 @@ const renderScreen = state => {
 
 const screenTitles = [
   'Home',
+  'Contacts',
   'About you',
   'Login',
   'Register',

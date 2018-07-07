@@ -36,26 +36,6 @@ const cardTitles = {
   phone: "Your phone number",
 };
 
-class Contacts extends Component {
-  componentDidMount() {
-    const { credentials, fetchContacts } = this.props;
-    fetchContacts(credentials);
-  }
-
-  renderCards(contacts) {
-    return contacts.map((contact, idx) => 
-      <ContactCard contact={contact} expanded={true} key={idx}/>);
-  }
-
-  render() {
-    return (
-      <div>
-        {this.renderCards(this.props.contacts)}
-      </div>
-    );
-  }
-};
-
 const UserScreen = props => {
   const {
     contacts,
@@ -94,7 +74,6 @@ const UserScreen = props => {
       <div>
         <h2>{ user.name }</h2>
         { cards }
-        <Contacts credentials={credentials} contacts={contacts} fetchContacts={fetchContacts}/>
       </div>
     );
   } else {
