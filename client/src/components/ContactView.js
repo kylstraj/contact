@@ -2,7 +2,7 @@ import React from 'react';
 import ErrorScreen from './screens/error';
 import HomeScreen from './screens/home';
 import LoginScreen from './screens/login';
-import RegisterScreen from './screens/register';
+import RegisterScreenContainer from '../containers/RegisterScreenContainer';
 import ContactsScreenContainer from '../containers/ContactsScreenContainer';
 import SearchUsersScreenContainer from '../containers/SearchUsersScreenContainer';
 import UserScreenContainer from '../containers/UserScreenContainer';
@@ -20,7 +20,7 @@ const renderScreen = state => {
     case SCREENS.LOGIN:
       return (<LoginScreen loginFlash={loginFlash} onLoginAttempts={onLoginAttempts}/>);
     case SCREENS.REGISTER:
-      return (<RegisterScreen/>);
+      return (<RegisterScreenContainer/>);
     case SCREENS.USER:
       return (<UserScreenContainer/>);
     case SCREENS.CONTACTS:

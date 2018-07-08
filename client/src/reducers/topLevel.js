@@ -4,6 +4,7 @@ import {
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
   LOGOUT,
+  REGISTRATION_SUCCEEDED,
   SET_SCREEN, 
   START_EDIT_INFO,
   START_FETCH_CONTACTS,
@@ -61,6 +62,18 @@ const topLevelReducer = function(state = initialState, action) {
         },
       );
     case LOGIN_SUCCESS:
+      return Object.assign(
+        {},
+        state,
+        {
+          loggedIn: true,
+          loginFlash: '',
+          credentials: action.credentials,
+          screen: SCREENS.USER,
+          user: action.user,
+        },
+      );
+    case REGISTRATION_SUCCEEDED:
       return Object.assign(
         {},
         state,

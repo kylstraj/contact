@@ -7,10 +7,13 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
 export const OPEN_EDIT_INFO_FORM = 'OPEN_EDIT_INFO_FORM';
+export const REGISTRATION_FAILED = 'REGISTRATION_FAILED';
+export const REGISTRATION_SUCCEEDED = 'REGISTRATION_SUCCEEDED';
 export const SET_SCREEN = 'SET_SCREEN';
 export const START_EDIT_INFO = 'START_EDIT_INFO';
 export const START_SHARE_INFO = 'START_SHARE_INFO';
 export const START_FETCH_CONTACTS = 'START_FETCH_CONTACTS';
+export const START_REGISTRATION_ATTEMPT = 'START_REGISTRATION_ATTEMPT';
 export const START_SEARCH_USERS = 'START_SEARCH_USERS';
 export const TOGGLE_CONTACT_OPEN = 'TOGGLE_CONTACT_OPEN';
 export const USERS_SEARCHED = 'USERS_SEARCHED';
@@ -83,6 +86,21 @@ export const logout = () => (
   }
 );
 
+export const registrationFailed = (message) => (
+  {
+    message,
+    type: REGISTRATION_SUCCEEDED,
+  }
+);
+
+export const registrationSucceeded = (credentials, user) => (
+  {
+    credentials,
+    type: REGISTRATION_SUCCEEDED,
+    user,
+  }
+);
+
 export const openEditInfoForm = field => (
   {
     field,
@@ -116,6 +134,12 @@ export const startShareInfo = (contactUsername) => (
 export const startFetchContacts = () => (
   {
     type: START_FETCH_CONTACTS,
+  }
+);
+
+export const startRegistrationAttempt = () => (
+  {
+    type: START_REGISTRATION_ATTEMPT,
   }
 );
 

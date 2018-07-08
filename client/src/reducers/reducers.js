@@ -5,11 +5,13 @@ import topLevelReducer from './topLevel';
 import formsReducer from './forms';
 import searchUsersReducer from './searchUsersScreen';
 import userScreenReducer from './userScreen';
+import registerScreenReducer from './registerScreen';
 
 const contactApp = combineReducers({
   contactsScreen: contactsScreenReducer,
   form: formReducer,
   main: topLevelReducer,
+  registerScreen: registerScreenReducer,
   searchUsers: searchUsersReducer,
   userScreen: userScreenReducer,
 });
