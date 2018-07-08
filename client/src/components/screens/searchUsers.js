@@ -30,9 +30,9 @@ const UserDisplayBox = ({ users }) => (
   </div>
 );
 
-const SearchUsersScreen = ({ onSearchClick, usersFound }) => (
+const SearchUsersScreen = ({ credentials, onSearchClick, usersFound }) => (
   <div>
-    <UsersSearchBox onSubmit={ data => onSearchClick(data.userSearch) } />
+    <UsersSearchBox onSubmit={ data => onSearchClick(data.userSearch, credentials) } />
     <UserDisplayBox users={usersFound} />
   </div>
 );

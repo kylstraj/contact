@@ -9,7 +9,9 @@ export const OPEN_EDIT_INFO_FORM = 'OPEN_EDIT_INFO_FORM';
 export const SET_SCREEN = 'SET_SCREEN';
 export const START_EDIT_INFO = 'START_EDIT_INFO';
 export const START_FETCH_CONTACTS = 'START_FETCH_CONTACTS';
+export const START_SEARCH_USERS = 'START_SEARCH_USERS';
 export const TOGGLE_CONTACT_OPEN = 'TOGGLE_CONTACT_OPEN';
+export const USERS_SEARCHED = 'USERS_SEARCHED';
 
 export const SCREENS = {
   CONTACTS: 'CONTACTS',
@@ -24,6 +26,13 @@ export const closeEditInfoForm = field => (
   {
     field,
     type: CLOSE_EDIT_INFO_FORM,
+  }
+);
+
+export const contactsFetched = (contacts) => (
+  {
+    contacts,
+    type: CONTACTS_FETCHED,
   }
 );
 
@@ -72,7 +81,6 @@ export const openEditInfoForm = field => (
   }
 );
 
-
 export const setScreen = (screen, data = {}) => (
   {
     data,
@@ -95,10 +103,9 @@ export const startFetchContacts = () => (
   }
 );
 
-export const contactsFetched = (contacts) => (
+export const startSearchUsers = () => (
   {
-    contacts,
-    type: CONTACTS_FETCHED,
+    type: START_SEARCH_USERS,
   }
 );
 
@@ -106,5 +113,12 @@ export const toggleContactOpen = contact => (
   {
     contact,
     type: TOGGLE_CONTACT_OPEN,
+  }
+);
+
+export const usersSearched = users => (
+  {
+    type: USERS_SEARCHED,
+    users,
   }
 );
