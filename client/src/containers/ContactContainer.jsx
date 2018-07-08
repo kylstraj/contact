@@ -26,6 +26,7 @@ const mapDispatchToProps = dispatch => (
       'Contacts': () => dispatch(setScreen(SCREENS.CONTACTS)),
       'Login': () => dispatch(setScreen(SCREENS.LOGIN)),
       'Register': () => dispatch(setScreen(SCREENS.REGISTER)),
+      'Search Users': () => dispatch(setScreen(SCREENS.SEARCH)),
       'About you': (user) => dispatch(setScreen(SCREENS.USER, {user})),
       'Logout': () => dispatch(logout()),
     },

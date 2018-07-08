@@ -4,6 +4,7 @@ import HomeScreen from './screens/home';
 import LoginScreen from './screens/login';
 import RegisterScreen from './screens/register';
 import ContactsScreenContainer from '../containers/ContactsScreenContainer';
+import SearchUsersScreenContainer from '../containers/SearchUsersScreenContainer';
 import UserScreenContainer from '../containers/UserScreenContainer';
 import Nav from './Nav';
 import { SCREENS } from '../actions/actions';
@@ -24,6 +25,8 @@ const renderScreen = state => {
       return (<UserScreenContainer/>);
     case SCREENS.CONTACTS:
       return (<ContactsScreenContainer contacts={contacts}/>);
+    case SCREENS.SEARCH:
+      return (<SearchUsersScreenContainer/>);
     default:
       return (<ErrorScreen error={'404'}/>);
   }
@@ -31,7 +34,6 @@ const renderScreen = state => {
 
 const screenTitlesDefault = [
   'Home',
-  'About you',
   'Login',
   'Register',
   'Logout',
@@ -41,8 +43,7 @@ const screenTitlesLoggedIn = [
   'Home',
   'Contacts',
   'About you',
-  'Login',
-  'Register',
+  'Search Users',
   'Logout',
 ];
 
