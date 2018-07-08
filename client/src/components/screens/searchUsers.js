@@ -15,29 +15,29 @@ UsersSearchBox = reduxForm({
   form: 'searchUsers'
 })(UsersSearchBox);
 
-const UserDisplayCard = ({ name, onShareClick, contactUsername, userUsername }) => (
+const UserDisplayCard = ({ name, onShareClick, contactUsername, userCredentials }) => (
   <p className='user-display-card'>
     {name} ({contactUsername})
-    <button onClick={ () => onShareClick(contactUsername, userUsername) }>
+    <button onClick={ () => onShareClick(contactUsername, userCredentials) }>
       Share Your Info
     </button>
   </p>
 );
 
-const renderUserCards = (contactUsers, onShareClick, userUsername) => 
+const renderUserCards = (contactUsers, onShareClick, userCredentials) => 
   contactUsers.map(contactUser => 
     <UserDisplayCard 
       contactUsername={contactUser.username}
       key={contactUser.username}
       name={contactUser.name} 
-      userUsername={userUsername}
+      userCredentials={userCredentials}
       onShareClick={onShareClick}
     />
   );
 
-const UserDisplayBox = ({ contactUsers, onShareClick, userUsername }) => (
+const UserDisplayBox = ({ contactUsers, onShareClick, userCredentials }) => (
   <div>
-    {renderUserCards(contactUsers, onShareClick, userUsername)}
+    {renderUserCards(contactUsers, onShareClick, userCredentials)}
   </div>
 );
 
@@ -54,7 +54,7 @@ const SearchUsersScreen = (
     <UserDisplayBox 
       contactUsers={usersFound} 
       onShareClick={onShareClick} 
-      userUsername={credentials.username}
+      userCredentials={credentials}
     />
   </div>
 );

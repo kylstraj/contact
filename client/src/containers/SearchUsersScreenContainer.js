@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import SearchUsersScreen from '../components/screens/searchUsers';
 import {
+  infoShared,
   startSearchUsers,
+  startShareInfo,
   usersSearched,
 } from '../actions/actions';
 
@@ -32,7 +34,23 @@ const mapDispatchToProps = dispatch => (
           return res.users;
         });
     },
-    onShareClick: (sharee, sharer) => alert(`sharing ${sharer}'s info with ${sharee}`),
+    onShareClick: (sharee, credentials) => {
+      dispatch(startShareInfo(sharee));
+      fetch(`/api/user/share_info/${sharee}`,
+        {
+          body: JSON.stringify({credentials}),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        })
+        .then(res => res.json())
+        .then(res => {
+          dispatch(infoShared(sharee));
+          return res;
+        });
+    },
   }
 );
 

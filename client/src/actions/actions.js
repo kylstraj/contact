@@ -2,12 +2,14 @@ export const CLOSE_EDIT_INFO_FORM = 'CLOSE_EDIT_INFO_FORM';
 export const CONTACTS_FETCHED = 'CONTACTS_FETCHED';
 export const FORM_FIELD_CHANGE = 'FORM_FIELD_CHANGE';
 export const INFO_EDITED = 'INFO_EDITED';
+export const INFO_SHARED = 'INFO_SHARED';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
 export const OPEN_EDIT_INFO_FORM = 'OPEN_EDIT_INFO_FORM';
 export const SET_SCREEN = 'SET_SCREEN';
 export const START_EDIT_INFO = 'START_EDIT_INFO';
+export const START_SHARE_INFO = 'START_SHARE_INFO';
 export const START_FETCH_CONTACTS = 'START_FETCH_CONTACTS';
 export const START_SEARCH_USERS = 'START_SEARCH_USERS';
 export const TOGGLE_CONTACT_OPEN = 'TOGGLE_CONTACT_OPEN';
@@ -53,6 +55,13 @@ export const infoEdited = (field, user) => (
   }
 );
 
+export const infoShared = (contactUsername) => (
+  {
+    contactUsername,
+    type: INFO_SHARED,
+  }
+);
+
 export const loginFailure = (reason) => (
   {
     reason,
@@ -94,6 +103,13 @@ export const startEditInfo = (field, value) => (
     field,
     type: START_EDIT_INFO,
     value,
+  }
+);
+
+export const startShareInfo = (contactUsername) => (
+  {
+    contactUsername,
+    type: START_SHARE_INFO,
   }
 );
 
