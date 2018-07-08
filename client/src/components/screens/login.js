@@ -1,6 +1,5 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { loginSuccess, loginFailure } from '../../actions/actions';
 
 const loginAttempt = (username, password, onLoginAttempts) => {
   const { onLoginSuccess, onLoginFailure } = onLoginAttempts;
