@@ -36,7 +36,6 @@ const screenTitlesDefault = [
   'Home',
   'Login',
   'Register',
-  'Logout',
 ];
 
 const screenTitlesLoggedIn = [
