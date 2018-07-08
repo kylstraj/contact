@@ -32,6 +32,7 @@ const mapDispatchToProps = dispatch => (
           return res.users;
         });
     },
+    onShareClick: (sharee, sharer) => alert(`sharing ${sharer}'s info with ${sharee}`),
   }
 );
 
