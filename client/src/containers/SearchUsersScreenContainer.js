@@ -11,6 +11,8 @@ const mapStateToProps = state => (
   {
     credentials: state.main.credentials,
     inProgress: state.searchUsers.searchInProgress,
+    sharesInProgress: state.searchUsers.sharesInProgress,
+    shareResults: state.searchUsers.shareResults,
     usersFound: state.searchUsers.searchResults,
   }
 );

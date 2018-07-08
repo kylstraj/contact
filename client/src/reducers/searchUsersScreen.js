@@ -13,13 +13,11 @@ const initialState = {
   shareResults: {},
 };
 
-const immutPush = (obj, key, val) => Object.assign(
-  {},
-  obj,
-  {
-    key: val,
-  }
-);
+const immutPush = (obj, key, val) => {
+  let copy = {...obj};
+  copy[key] = val;
+  return copy;
+}
 
 const searchUsersReducer = (state = initialState, action) => {
   switch (action.type) {

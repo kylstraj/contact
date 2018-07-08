@@ -3,18 +3,35 @@ var userUrl = require("../utils/userUrl");
 var pwd = require("../private/pwd");
 
 var userSchema = mongoose.Schema({
-  username: String,
-  fullName: String,
-  email: String,
-  address: String,
-  phone: String,
+  username: {
+    maxlength: 20,
+    required: true,
+    type: String,
+    unique: true,
+  },
+  fullName: {
+    maxlength: 255,
+    required: true,
+    type: String,
+  },
+  email: {
+    maxlength: 255,
+    type: String,
+  },
+  address: {
+    maxlength: 255,
+    type: String,
+  },
+  phone: {
+    maxlength: 255,
+    type: String,
+  },
   contacts: [ mongoose.Schema.Types.ObjectId ],
-  relationships: [ mongoose.Schema.Types.ObjectId ],
-  passwordHash: String,
+  passwordHash: {
+    required: true,
+    type: String,
+  },
 });
-
-userSchema.virtual("url").
-  get(function() { return userUrl(this); });
 
 userSchema.method('verifyPassword', password => pwd.verify(password, this.passwordHash));
 

@@ -15,37 +15,58 @@ UsersSearchBox = reduxForm({
   form: 'searchUsers'
 })(UsersSearchBox);
 
-const UserDisplayCard = ({ name, onShareClick, contactUsername, userCredentials }) => (
-  <p className='user-display-card'>
-    {name} ({contactUsername})
-    <button onClick={ () => onShareClick(contactUsername, userCredentials) }>
-      Share Your Info
-    </button>
-  </p>
-);
-
-const renderUserCards = (contactUsers, onShareClick, userCredentials) => 
-  contactUsers.map(contactUser => 
-    <UserDisplayCard 
-      contactUsername={contactUser.username}
-      key={contactUser.username}
-      name={contactUser.name} 
-      userCredentials={userCredentials}
-      onShareClick={onShareClick}
-    />
+const UserDisplayCard = 
+  ({ name, onShareClick, contactUsername, userCredentials, inProgress, shared }) => (
+    !inProgress && !shared
+      ? (
+        <p className='user-display-card'>
+          {name} ({contactUsername})
+          <button onClick={ () => onShareClick(contactUsername, userCredentials) }>
+            Share Your Info
+          </button>
+        </p>
+        )
+      : inProgress
+        ? (
+          <p className='user-display-card'>
+            {name} ({contactUsername}) Sharing your info...
+          </p>
+          )
+        : (
+          <p className='user-display-card'>
+            You shared your info with {name}!
+          </p>
+          )
   );
 
-const UserDisplayBox = ({ contactUsers, onShareClick, userCredentials }) => (
-  <div>
-    {renderUserCards(contactUsers, onShareClick, userCredentials)}
-  </div>
-);
+const renderUserCards = 
+  (contactUsers, onShareClick, sharesInProgress, shareResults, userCredentials) =>
+    contactUsers.map(contactUser => 
+      <UserDisplayCard 
+        contactUsername={contactUser.username}
+        key={contactUser.username}
+        name={contactUser.name} 
+        userCredentials={userCredentials}
+        onShareClick={onShareClick}
+        inProgress={sharesInProgress[contactUser.username]}
+        shared={shareResults[contactUser.username]}
+      />
+    );
+
+const UserDisplayBox = 
+  ({ contactUsers, onShareClick, sharesInProgress, shareResults, userCredentials }) => (
+    <div>
+      {renderUserCards(contactUsers, onShareClick, sharesInProgress, shareResults,userCredentials)}
+    </div>
+  );
 
 const SearchUsersScreen = (
   { 
     credentials, 
     onSearchClick, 
     onShareClick, 
+    sharesInProgress,
+    shareResults,
     usersFound 
   }
 ) => (
@@ -54,6 +75,8 @@ const SearchUsersScreen = (
     <UserDisplayBox 
       contactUsers={usersFound} 
       onShareClick={onShareClick} 
+      sharesInProgress={sharesInProgress}
+      shareResults={shareResults}
       userCredentials={credentials}
     />
   </div>
