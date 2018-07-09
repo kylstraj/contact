@@ -17,11 +17,11 @@ router.post('/user', auth, function(req, res, next) {
   return res.json(payload);
 });
 
-router.post('/user/update/:fieldName', auth, function(req, res, next) {
+router.post('/user/:username/update/:fieldName', auth, function(req, res, next) {
   if (!req.body)
     return next(req);
   const { value } = req.body;
-  const { fieldName } = req.params;
+  const { fieldName, username } = req.params;
   const validFields = [
     'address',
     'email',
@@ -32,8 +32,8 @@ router.post('/user/update/:fieldName', auth, function(req, res, next) {
   }
   let update = {};
   update[fieldName] = value;
-  User.findByIdAndUpdate(
-    res.locals.user._id,
+  User.findOneAndUpdate(
+    { username },
     update,
     {new: true},
     function(err, user) {

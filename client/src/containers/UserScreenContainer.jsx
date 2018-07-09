@@ -22,31 +22,14 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {    
-    fetchContacts: (credentials) => {
-      dispatch(startFetchContacts());
-      return fetch('/api/user/contacts/verbose',
-        {
-          body: JSON.stringify({credentials}),
-          credentials: 'same-origin',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-        })
-        .then(res => res.json())
-        .then(res => {
-          dispatch(contactsFetched(res.contacts));
-          return res.contacts;
-        });
-    },
     onEditButtonClick: field => dispatch(openEditInfoForm(field)),
     onSaveButtonClick: (field, value, credentials) => {
       dispatch(startEditInfo(field, value));
       dispatch(closeEditInfoForm(field));
-      return fetch(`/api/user/update/${field}`,
+      return fetch(`/api/user/${credentials.username}/update/${field}`,
         {
-          body: JSON.stringify({credentials, value}),
+          body: JSON.stringify({value}),
+          credentials: 'include',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
