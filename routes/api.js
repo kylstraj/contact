@@ -2,20 +2,22 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var pwd = require('../private/pwd');
+var auth = require('../middleware/auth');
+var printSession = require('../middleware/printSession');
 
-router.post('/user', function(req, res, next) {
-  console.log(res.locals.user);
-  const { address, email, phone } = res.locals.user;
+router.post('/user', auth, function(req, res, next) {
+  const { user } = req;
+  const { address, email, phone } = req.user;
   const payload = {
     address,
     email,
-    name: res.locals.user.fullName,
+    name: user.fullName,
     phone,
   };
   return res.json(payload);
 });
 
-router.post('/user/update/:fieldName', function(req, res, next) {
+router.post('/user/update/:fieldName', auth, function(req, res, next) {
   if (!req.body)
     return next(req);
   const { value } = req.body;
@@ -55,7 +57,7 @@ router.post('/user/update/:fieldName', function(req, res, next) {
     });
 });
 
-router.post('/user/share_info/:contactUsername', function(req, res, next) {
+router.post('/user/share_info/:contactUsername', auth, function(req, res, next) {
   const { contactUsername } = req.params;
   User.findOneAndUpdate(
     {username: contactUsername},
@@ -77,7 +79,7 @@ router.post('/user/share_info/:contactUsername', function(req, res, next) {
     });
 });
 
-router.post('/user/contacts', function(req, res, next) {
+router.post('/user/contacts', auth, function(req, res, next) {
   const { user } = res.locals;
   const { contacts } = user;
   User.find({_id: {$in: contacts}}, function(err, friends) {
@@ -90,8 +92,8 @@ router.post('/user/contacts', function(req, res, next) {
   });
 });
 
-router.post('/user/contacts/verbose', function(req, res, next) {
-  const { user } = res.locals;
+router.post('/user/contacts/verbose', printSession, auth, function(req, res, next) {
+  const { user } = req;
   const { contacts } = user;
   User.find({_id: {$in: contacts}}, function(err, friends) {
     if (err) {
@@ -110,7 +112,7 @@ router.post('/user/contacts/verbose', function(req, res, next) {
 });
 
 
-router.post('/user/contact/:requestee', function(req, res, next) {
+router.post('/user/contact/:requestee', auth, function(req, res, next) {
   const { requestee } = req.params;
   const { user } = res.locals;
   const { contacts } = user;
@@ -140,7 +142,7 @@ router.post('/user/contact/:requestee', function(req, res, next) {
   });
 });
 
-router.post('/user/contact/:requestee/:fieldName', function(req, res, next) {
+router.post('/user/contact/:requestee/:fieldName', auth, function(req, res, next) {
   const { requestee, fieldName } = req.params;
   const { user } = res.locals;
   const { contacts } = user;

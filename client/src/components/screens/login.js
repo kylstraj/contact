@@ -3,19 +3,18 @@ import { Field, reduxForm } from 'redux-form';
 
 const loginAttempt = (username, password, onLoginAttempts) => {
   const { onLoginSuccess, onLoginFailure } = onLoginAttempts;
-  fetch(
-    '/api/user',
-    {
-      body: JSON.stringify({credentials: {username, password}}),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
+  fetch('/login', {
+    body: JSON.stringify({username, password}),
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST'
+  })
     .then(res => res.json())
     .then(
-      res => res.address 
+      res => res.address
         ? onLoginSuccess({username, password}, res)
         : onLoginFailure(res.error)
     );

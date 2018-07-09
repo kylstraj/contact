@@ -27,6 +27,7 @@ const mapDispatchToProps = dispatch => (
       return fetch('/api/user/contacts/verbose',
         {
           body: JSON.stringify({credentials}),
+          credentials: 'same-origin',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
