@@ -7,21 +7,26 @@ let RegisterForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <fieldset>
+        <legend>Your Credentials</legend>
         <p>
           <label htmlFor='username'>Username: </label>
           <Field name='username' component='input' type='text'/>
         </p>
         <p>
-        <p>
           <label htmlFor='password'>Password: </label>
           <Field name='password' component='input' type='password'/>
         </p>
+        <p>
           <label htmlFor='confirmPassword'>Confirm Password: </label>
           <Field name='confirmPassword' component='input' type='password'/>
         </p>
       </fieldset>
       <fieldset>
-        <legend>Your Contact Info</legend>
+        <legend>Your Info</legend>
+        <p>
+          <label htmlFor='name'>Your name: </label>
+          <Field name='name' component='input' type='text'/>
+        </p>
         <p>
           <label htmlFor='email'>Your email: </label>
           <Field name='email' component='input' type='text'/>
@@ -51,6 +56,7 @@ const Register = ({onRegisterClick, message, inProgress}) => (
         data.username, 
         data.password, 
         data.confirmPassword, 
+        data.name,
         data.email, 
         data.phone, 
         data.address

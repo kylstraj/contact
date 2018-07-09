@@ -16,7 +16,7 @@ router.post('/', printSession, function(req, res, next) {
       return res.json({error: 'Invalid password.'});
     }
     req.session.user = user;
-    const { _id, address, contacts, email, phone, fullName } = user;
+    const { _id, address, contacts, email, phone, fullName, username } = user;
     const payload = {
       _id,
       address,
@@ -24,6 +24,7 @@ router.post('/', printSession, function(req, res, next) {
       email,
       name: fullName,
       phone,
+      username,
     };
     return res.json(payload);
   });

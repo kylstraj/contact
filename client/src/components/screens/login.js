@@ -14,7 +14,7 @@ const loginAttempt = (username, password, onLoginAttempts) => {
   })
     .then(res => res.json())
     .then(
-      res => res.address
+      res => res.username
         ? onLoginSuccess({username, password}, res)
         : onLoginFailure(res.error)
     );
