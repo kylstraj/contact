@@ -28,7 +28,19 @@ const mapDispatchToProps = dispatch => (
       'Register': () => dispatch(setScreen(SCREENS.REGISTER)),
       'Search Users': () => dispatch(setScreen(SCREENS.SEARCH)),
       'About you': (user) => dispatch(setScreen(SCREENS.USER, {user})),
-      'Logout': () => dispatch(logout()),
+      'Logout': () => {
+        fetch('/api/user/logout',
+          {
+            credentials: 'include',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+          })
+          .then(res => res.json())
+          .then(res => dispatch(logout()));
+      },
     },
     onLoginAttempts: {
       onLoginSuccess: (credentials, user) => {

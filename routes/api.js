@@ -194,4 +194,11 @@ router.post('/search_users/:name', function(req, res, next) {
   });
 });
 
+router.post('/user/logout', auth, function(req, res, next) {
+  const tempUser = req.user;
+  req.session.user = undefined;
+  req.user = undefined;
+  return res.json({message: `logged out ${tempUser.username}`});
+});
+
 module.exports = router;
