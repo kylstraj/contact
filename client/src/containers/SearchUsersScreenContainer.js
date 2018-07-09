@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => (
       fetch(`/api/search_users/${searchStr}`,
         {
           body: JSON.stringify({credentials}),
+          credentials: 'include',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -41,6 +42,7 @@ const mapDispatchToProps = dispatch => (
       fetch(`/api/user/share_info/${sharee}`,
         {
           body: JSON.stringify({credentials}),
+          credentials: 'include',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

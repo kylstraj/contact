@@ -15,7 +15,15 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    onRegisterClick: (username) => alert(`attempting to register user ${username}`),
+    onRegisterClick: (
+      username,
+      password,
+      confirm,
+      name,
+      email,
+      phone,
+      address,
+    ) => alert(`attempting to register user ${username}`),
   }
 );
 

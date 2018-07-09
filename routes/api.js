@@ -61,7 +61,7 @@ router.post('/user/share_info/:contactUsername', auth, function(req, res, next) 
   const { contactUsername } = req.params;
   User.findOneAndUpdate(
     {username: contactUsername},
-    {$push: {contacts: res.locals.user._id}},
+    {$push: {contacts: req.user._id}},
     function (err, friend) {
       if (err) {
         console.error(err);
@@ -69,7 +69,7 @@ router.post('/user/share_info/:contactUsername', auth, function(req, res, next) 
       }
       if (friend) {
         res.json(
-          {success: `${res.locals.user.username} shared contact info with ${contactUsername}`}
+          {success: `${req.user.username} shared contact info with ${contactUsername}`}
         );
       } else {
         res.json(
@@ -80,7 +80,7 @@ router.post('/user/share_info/:contactUsername', auth, function(req, res, next) 
 });
 
 router.post('/user/contacts', auth, function(req, res, next) {
-  const { user } = res.locals;
+  const { user } = req;
   const { contacts } = user;
   User.find({_id: {$in: contacts}}, function(err, friends) {
     if (err) {
@@ -114,7 +114,7 @@ router.post('/user/contacts/verbose', printSession, auth, function(req, res, nex
 
 router.post('/user/contact/:requestee', auth, function(req, res, next) {
   const { requestee } = req.params;
-  const { user } = res.locals;
+  const { user } = req;
   const { contacts } = user;
   User.findOne({username: requestee}, function(err, contact) {
     if (err) {
@@ -144,7 +144,7 @@ router.post('/user/contact/:requestee', auth, function(req, res, next) {
 
 router.post('/user/contact/:requestee/:fieldName', auth, function(req, res, next) {
   const { requestee, fieldName } = req.params;
-  const { user } = res.locals;
+  const { user } = req;
   const { contacts } = user;
   const validFields = [
     'address',
@@ -173,6 +173,13 @@ router.post('/user/contact/:requestee/:fieldName', auth, function(req, res, next
   });
 });
 
+router.post('/user/logout', auth, function(req, res, next) {
+  const tempUser = req.user;
+  req.session.user = undefined;
+  req.user = undefined;
+  return res.json({message: `logged out ${tempUser.username}`});
+});
+
 router.post('/search_users/:name', function(req, res, next) {
   const { name } = req.params;
   const nameRegEx = new RegExp(name, 'i');
@@ -194,11 +201,21 @@ router.post('/search_users/:name', function(req, res, next) {
   });
 });
 
-router.post('/user/logout', auth, function(req, res, next) {
-  const tempUser = req.user;
-  req.session.user = undefined;
-  req.user = undefined;
-  return res.json({message: `logged out ${tempUser.username}`});
+router.post('/new_user', function(req, res, next) {
+  const { username, password, name, email, phone, address } = req.body;
+  let user = new User({ 
+    username, 
+    passwordHash: pwd.hash(password), 
+    fullName: name,
+    email, 
+    phone, 
+    address 
+  });
+  user.save(err => {
+    console.error(err);
+    return next(err);
+  });
+  return res.json({ username, name, email, phone, address });
 });
 
 module.exports = router;
