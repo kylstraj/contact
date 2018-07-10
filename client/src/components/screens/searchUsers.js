@@ -1,12 +1,13 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import Button from '@material-ui/core/Button';
 
 let UsersSearchBox = ({ handleSubmit }) => (
   <form onSubmit={handleSubmit}>
     <p>
       <label htmlFor='userSearch'>Name: </label>
       <Field name='userSearch' component='input' type='text'/>
-      <button type='submit'>Search</button>
+      <Button color='primary' variant='contained' type='submit'>Search</Button>
     </p>
   </form>
 );
@@ -21,9 +22,13 @@ const UserDisplayCard =
       ? (
         <p className='user-display-card'>
           {name} ({contactUsername})
-          <button onClick={ () => onShareClick(contactUsername, userCredentials) }>
+          <Button 
+            variant='contained'
+            color='primary'
+            onClick={ () => onShareClick(contactUsername, userCredentials) }
+          >
             Share Your Info
-          </button>
+          </Button>
         </p>
         )
       : inProgress

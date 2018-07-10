@@ -1,4 +1,5 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import ErrorScreen from './screens/error';
 import HomeScreen from './screens/home';
 import LoginScreen from './screens/login';
@@ -9,7 +10,17 @@ import UserScreenContainer from '../containers/UserScreenContainer';
 import Nav from './Nav';
 import { SCREENS } from '../actions/actions';
 
-const Header = (props) => <h1>Contact</h1>;
+const styles = () => ({
+  header: {
+    textAlign: 'center',
+  },
+  main: {
+    textAlign: 'center',
+  },
+});
+
+let Header = (props) => <h1 className={props.classes.header}>Contact</h1>;
+Header = withStyles(styles)(Header);
 
 const renderScreen = state => {
   const { credentials, screen, user, loginFlash, contacts } = state.main;
@@ -50,7 +61,7 @@ const ContactView = props => {
   return (
     props.dev
       ? (
-        <div>
+        <div className={props.classes.main}>
           <Header/>
           <Nav clicks={props.clicks} 
             titles={props.main.user !== {} ? screenTitlesLoggedIn : screenTitlesDefault}/>
@@ -59,7 +70,7 @@ const ContactView = props => {
         </div>
         )
       : (
-        <div>
+        <div className={props.classes.main}>
           <Header/>
           <Nav clicks={props.clicks} 
             titles={props.main.loggedIn ? screenTitlesLoggedIn : screenTitlesDefault}/>
@@ -69,4 +80,4 @@ const ContactView = props => {
   );
 };
 
-export default ContactView;
+export default withStyles(styles)(ContactView);

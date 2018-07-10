@@ -5,21 +5,24 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = () => (
   {
     button: {
-      margin: '2em',
+      margin: '1em',
+    },
+    nav: {
+      textAlign: 'center',
     },
   }
 );
 
-let NavButton = ({ onClick, title }) => (
-  <Button variant='contained' color='primary' onClick={ () => onClick() }>{ title }</Button>
+let NavButton = ({ classes, onClick, title }) => (
+  <Button className={classes.button} onClick={ () => onClick() }>{ title }</Button>
 );
 
 NavButton = withStyles(styles)(NavButton);
 
-const Nav = ({ clicks, titles }) => (
-  <nav>
+const Nav = ({ classes, clicks, titles }) => (
+  <nav className={classes.nav}>
     { titles.map(title => <NavButton onClick={ clicks[title] } title={ title } />) }
   </nav>
 );
 
-export default Nav;
+export default withStyles(styles)(Nav);

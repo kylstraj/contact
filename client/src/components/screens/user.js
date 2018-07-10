@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import ContactCard from '../ContactCard';
+import Button from '@material-ui/core/Button';
 
 const FactCard = ({ fact, title, onSubmit, inFlux }) => (
   <form onSubmit={onSubmit}>
     <p>
       { title }: { inFlux ? 'Updating...' : fact }
-    </p>
-    <p>
-      <button type='submit'>Change</button>
+      <Button color='primary' variant='contained' type='submit'>Change</Button>
     </p>
   </form>
 );
@@ -19,9 +18,7 @@ let EditCard = ({ fact, title, fieldName, handleSubmit, user }) => (
     <p>
       <label htmlFor={title}>{title}: </label>
       <Field name={fieldName} component='input' type='text' />
-    </p>
-    <p>
-      <button>Save</button>
+      <Button color='primary' variant='contained' type='submit'>Save</Button>
     </p>
   </form>
 );
