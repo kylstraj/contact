@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import Button from '@material-ui/core/Button';
 
 const loginAttempt = (username, password, onLoginAttempts) => {
   const { onLoginSuccess, onLoginFailure } = onLoginAttempts;
@@ -39,7 +40,7 @@ let LoginForm = props => {
         <label htmlFor='password'>Password: </label>
         <Field name='password' component='input' type='password'/>
       </p>
-      <button type='submit'>Login</button>
+      <Button variant='contained' color='secondary' type='submit'>Login</Button>
     </form>
   );
 };

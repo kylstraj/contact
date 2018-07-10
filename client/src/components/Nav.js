@@ -1,8 +1,20 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 
-const NavButton = ({ onClick, title }) => (
-  <button onClick={ () => onClick() }>{ title }</button>
+const styles = () => (
+  {
+    button: {
+      margin: '2em',
+    },
+  }
 );
+
+let NavButton = ({ onClick, title }) => (
+  <Button variant='contained' color='primary' onClick={ () => onClick() }>{ title }</Button>
+);
+
+NavButton = withStyles(styles)(NavButton);
 
 const Nav = ({ clicks, titles }) => (
   <nav>
