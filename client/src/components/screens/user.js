@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import ContactCard from '../ContactCard';
-import Button from '@material-ui/core/Button';
+import Button from '../shared/Button';
 
 const FactCard = ({ fact, title, onSubmit, inFlux }) => (
   <form onSubmit={onSubmit}>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import Button from '@material-ui/core/Button';
+import Button from '../shared/Button';
+import renderTextField from '../../utils/renderTextField';
 
 let UsersSearchBox = ({ handleSubmit }) => (
   <form onSubmit={handleSubmit}>
     <p>
-      <label htmlFor='userSearch'>Name: </label>
-      <Field name='userSearch' component='input' type='text'/>
+      <Field label='Name' name='userSearch' component={renderTextField} type='text'/>
       <Button color='primary' variant='contained' type='submit'>Search</Button>
     </p>
   </form>
