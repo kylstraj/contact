@@ -45,7 +45,7 @@ const renderScreen = state => {
 
 const screenTitlesDefault = [
   'Home',
-  'Login',
+  'Log In',
   'Register',
 ];
 
@@ -54,7 +54,7 @@ const screenTitlesLoggedIn = [
   'Contacts',
   'About you',
   'Search Users',
-  'Logout',
+  'Log Out',
 ];
 
 const ContactView = props => {
