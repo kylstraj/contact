@@ -1,6 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import Button from '@material-ui/core/Button';
 import MessageField from '../MessageField';
+import renderTextField from '../../utils/renderTextField';
 
 let RegisterForm = props => {
   const { handleSubmit } = props;
@@ -8,39 +10,32 @@ let RegisterForm = props => {
     <form onSubmit={handleSubmit}>
       <fieldset>
         <legend>Your Credentials</legend>
-        <p>
-          <label htmlFor='username'>Username: </label>
-          <Field name='username' component='input' type='text'/>
-        </p>
-        <p>
-          <label htmlFor='password'>Password: </label>
-          <Field name='password' component='input' type='password'/>
-        </p>
-        <p>
-          <label htmlFor='confirmPassword'>Confirm Password: </label>
-          <Field name='confirmPassword' component='input' type='password'/>
-        </p>
+        <div>
+          <Field label='Username' name='username' component={renderTextField} type='text'/>
+        </div>
+        <div>
+          <Field label='Password' name='password' component={renderTextField} type='password'/>
+        </div>
+        <div>
+          <Field label='Confirm Password' name='confirmPassword' component={renderTextField} type='password'/>
+        </div>
       </fieldset>
       <fieldset>
         <legend>Your Info</legend>
-        <p>
-          <label htmlFor='name'>Your name: </label>
-          <Field name='name' component='input' type='text'/>
-        </p>
-        <p>
-          <label htmlFor='email'>Your email: </label>
-          <Field name='email' component='input' type='text'/>
-        </p>
-        <p>
-          <label htmlFor='phone'>Your phone number: </label>
-          <Field name='phone' component='input' type='text'/>
-        </p>
-        <p>
-          <label htmlFor='address'>Your address: </label>
-          <Field name='address' component='input' type='text'/>
-        </p>
+        <div>
+          <Field label='Your Name' name='name' component={renderTextField} type='text'/>
+        </div>
+        <div>
+          <Field label='Your Email' name='email' component={renderTextField} type='text'/>
+        </div>
+        <div>
+          <Field label='Your Phone Number' name='phone' component={renderTextField} type='text'/>
+        </div>
+        <div>
+          <Field label='Your Mailing Address' name='address' component={renderTextField} type='text'/>
+        </div>
       </fieldset>
-      <button type='submit'>Register</button>
+      <Button type='submit'>Register</Button>
     </form>
   );
 };

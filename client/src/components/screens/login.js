@@ -1,6 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import renderTextField from '../../utils/renderTextField';
 
 const loginAttempt = (username, password, onLoginAttempts) => {
   const { onLoginSuccess, onLoginFailure } = onLoginAttempts;
@@ -32,15 +34,13 @@ let LoginForm = props => {
   const { handleSubmit } = props;
   return (
     <form onSubmit={handleSubmit}>
-      <p>
-        <label htmlFor='username'>Username: </label>
-        <Field name='username' component='input' type='text'/>
-      </p>
-      <p>
-        <label htmlFor='password'>Password: </label>
-        <Field name='password' component='input' type='password'/>
-      </p>
-      <Button variant='contained' color='secondary' type='submit'>Login</Button>
+      <div>
+        <Field name='username' type='text' label='Username' component={renderTextField}/>
+      </div>
+      <div>
+        <Field name='password' type='password' label='Password' component={renderTextField}/>
+      </div>
+      <Button variant='contained' color='primary' type='submit'>Login</Button>
     </form>
   );
 };
