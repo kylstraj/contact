@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Relationship = require('../models/relationship');
 var pwd = require('../private/pwd');
 var auth = require('../middleware/auth');
 var printSession = require('../middleware/printSession');
@@ -15,6 +16,59 @@ router.post('/user', auth, function(req, res, next) {
     phone,
   };
   return res.json(payload);
+});
+
+router.post('/user/relationship/:otherUsername', auth, function(req, res, next) {
+  const { username } = req.user;
+  const { otherUsername } = req.params;
+  Relationship.findOne(
+    {$or: [
+      {'firstPerson.username': username, 'secondPerson.username': otherUsername},
+      {'firstPerson.username': otherUsername, 'secondPerson.username': username},
+    ]},
+    function (err, rship) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      } else {
+        return res.json({relationship: rship});
+      }
+    });
+});
+
+router.post('/user/new_relationship/:otherUsername', auth, function(req, res, next) {
+  const { username, _id } = req.user;
+  const { otherUsername } = req.params;
+  User.findOne({username: otherUsername}, function (err, other) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else if (!other) {
+      return res.json({error: `Couldn't find user ${otherUsername}`});
+    } else {
+      let rship = new Relationship({
+        firstPerson: {
+          id: _id,
+          username,
+          canSeeInfo: false,
+        },
+        secondPerson: {
+          id: other._id,
+          username: otherUsername,
+          canSeeInfo: true,
+        },
+        isReciprocal: false,
+      });
+      rship.save(function (err) {
+        if (err) {
+          console.error(err);
+          return next(err);
+        } else {
+          return res.json(rship);
+        }
+      });
+    }
+  });
 });
 
 router.post('/user/:username/update/:fieldName', auth, function(req, res, next) {
@@ -59,6 +113,7 @@ router.post('/user/:username/update/:fieldName', auth, function(req, res, next) 
 
 router.post('/user/share_info/:contactUsername', auth, function(req, res, next) {
   const { contactUsername } = req.params;
+
   User.findOneAndUpdate(
     {username: contactUsername},
     {$push: {contacts: req.user._id}},
@@ -228,5 +283,6 @@ router.post('/new_user', function(req, res, next) {
     }
   });
 });
+
 
 module.exports = router;

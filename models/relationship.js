@@ -7,6 +7,11 @@ var relationshipSchema = mongoose.Schema({
       required: true,
       type: mongoose.Schema.Types.ObjectId,
     },
+    username: {
+      required: true,
+      type: String,
+      maxLength: 20,
+    },
     canSeeInfo: {
       required: true,
       type: Boolean,
@@ -16,6 +21,11 @@ var relationshipSchema = mongoose.Schema({
     id: {
       required: true,
       type: mongoose.Schema.Types.ObjectId,
+    },
+    username: {
+      required: true,
+      type: String,
+      maxLength: 20,
     },
     canSeeInfo: {
       required: true,

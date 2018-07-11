@@ -5,7 +5,6 @@ var Relationship = require ('../models/relationship');
 
 router.get('/new_relationship/:uidOne/:uidTwo', function(req, res, next) {
   const { uidOne, uidTwo } = req.params;
-  console.log(`uidOne: ${uidOne}; uidTwo: ${uidTwo}`);
   const rship = new Relationship({
     firstPerson: {
       id: uidOne,
