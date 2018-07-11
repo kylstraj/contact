@@ -203,19 +203,30 @@ router.post('/search_users/:name', function(req, res, next) {
 
 router.post('/new_user', function(req, res, next) {
   const { username, password, name, email, phone, address } = req.body;
-  let user = new User({ 
-    username, 
-    passwordHash: pwd.hash(password), 
-    fullName: name,
-    email, 
-    phone, 
-    address 
+  User.findOne({ username }, function (err, user) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else if (user) {
+      return res.json({ error: 'That username already exists' });
+    } else {
+      let user = new User({ 
+        username, 
+        passwordHash: pwd.hash(password), 
+        fullName: name,
+        email, 
+        phone, 
+        address 
+      });
+      user.save(err => {
+        if (err) {
+          console.error(err);
+          return next(err);
+        }
+      });
+      return res.json({ username, name, email, phone, address });
+    }
   });
-  user.save(err => {
-    console.error(err);
-    return next(err);
-  });
-  return res.json({ username, name, email, phone, address });
 });
 
 module.exports = router;

@@ -11,28 +11,28 @@ let RegisterForm = props => {
       <fieldset>
         <legend>Your Credentials</legend>
         <div>
-          <Field label='Username' name='username' component={renderTextField} type='text'/>
+          <Field autoComplete='off' label='Username' name='username' component={renderTextField} type='text'/>
         </div>
         <div>
-          <Field label='Password' name='password' component={renderTextField} type='password'/>
+          <Field autoComplete='off' label='Password' name='password' component={renderTextField} type='password'/>
         </div>
         <div>
-          <Field label='Confirm Password' name='confirmPassword' component={renderTextField} type='password'/>
+          <Field autoComplete='off' label='Confirm Password' name='confirmPassword' component={renderTextField} type='password'/>
         </div>
       </fieldset>
       <fieldset>
         <legend>Your Info</legend>
         <div>
-          <Field label='Your Name' name='name' component={renderTextField} type='text'/>
+          <Field autoComplete='off' label='Your Name' name='name' component={renderTextField} type='text'/>
         </div>
         <div>
-          <Field label='Your Email' name='email' component={renderTextField} type='text'/>
+          <Field autoComplete='off' label='Your Email' name='email' component={renderTextField} type='text'/>
         </div>
         <div>
-          <Field label='Your Phone Number' name='phone' component={renderTextField} type='text'/>
+          <Field autoComplete='off' label='Your Phone Number' name='phone' component={renderTextField} type='text'/>
         </div>
         <div>
-          <Field label='Your Mailing Address' name='address' component={renderTextField} type='text'/>
+          <Field autoComplete='off' label='Your Mailing Address' name='address' component={renderTextField} type='text'/>
         </div>
       </fieldset>
       <Button type='submit'>Register</Button>

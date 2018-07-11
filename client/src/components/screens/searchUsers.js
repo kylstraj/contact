@@ -6,7 +6,7 @@ import renderTextField from '../../utils/renderTextField';
 let UsersSearchBox = ({ handleSubmit }) => (
   <form onSubmit={handleSubmit}>
     <p>
-      <Field label='Name' name='userSearch' component={renderTextField} type='text'/>
+      <Field autoComplete='off' label='Name' name='userSearch' component={renderTextField} type='text'/>
       <Button color='primary' variant='contained' type='submit'>Search</Button>
     </p>
   </form>

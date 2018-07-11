@@ -45,7 +45,9 @@ const mapDispatchToProps = dispatch => (
           method: 'POST',
         })
           .then(res => res.json())
-          .then(user => {
+          .then(userOrError => {
+            if (userOrError.error) throw userOrError.error;
+            const user = userOrError;
             dispatch(registrationSucceeded({username, password}, user));
             fetch('/login', {
               body: JSON.stringify({username, password}),
@@ -58,9 +60,7 @@ const mapDispatchToProps = dispatch => (
             })
               .then(res => res.json())
               .then(
-                res => res.username
-                  ? dispatch(loginSuccess({username, password}, res))
-                  : dispatch(loginFailure('Registration failed'))
+                res => dispatch(loginSuccess({username, password}, res))
               );
           })
           .catch(err => dispatch(registrationFailed(err)))

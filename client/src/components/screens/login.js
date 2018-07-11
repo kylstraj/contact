@@ -35,7 +35,7 @@ let LoginForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <Field name='username' type='text' label='Username' component={renderTextField}/>
+        <Field autoComplete='off' name='username' type='text' label='Username' component={renderTextField}/>
       </div>
       <div>
         <Field name='password' type='password' label='Password' component={renderTextField}/>

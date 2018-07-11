@@ -1,0 +1,6 @@
+- Validate that username isn't a duplicate
+- Create relationships model so that I can know/control who has my contact info
+- Create mobile app
+- Implement more advanced username/password control (forgot my password, etc.)
+- Split registration into two screens
+  

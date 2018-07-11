@@ -89,7 +89,7 @@ export const logout = () => (
 export const registrationFailed = (message) => (
   {
     message,
-    type: REGISTRATION_SUCCEEDED,
+    type: REGISTRATION_FAILED,
   }
 );
 
