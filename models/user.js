@@ -1,5 +1,4 @@
 var mongoose = require("mongoose");
-var userUrl = require("../utils/userUrl");
 var pwd = require("../private/pwd");
 
 var userSchema = mongoose.Schema({
@@ -27,6 +26,7 @@ var userSchema = mongoose.Schema({
     type: String,
   },
   contacts: [ mongoose.Schema.Types.ObjectId ],
+  relationships: [ mongoose.Schema.Types.ObjectId ],
   passwordHash: {
     required: true,
     type: String,

@@ -19,6 +19,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var userRoute = require('./routes/user');
+var utilRoute = require('./routes/util');
 var pwd = require('./private/pwd');
 
 var auth = require('./middleware/auth');
@@ -56,6 +57,7 @@ app.use('/home', index);
 app.use('/login', login);
 app.use('/user', userRoute);
 app.use('/api', api);
+app.use('/util', utilRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

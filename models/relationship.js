@@ -1,0 +1,68 @@
+const mongoose = require('mongoose');
+const User = require('./user');
+
+var relationshipSchema = mongoose.Schema({
+  firstPerson: {
+    id: {
+      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    canSeeInfo: {
+      required: true,
+      type: Boolean,
+    },
+  },
+  secondPerson: {
+    id: {
+      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    canSeeInfo: {
+      required: true,
+      type: Boolean,
+    },
+  },
+  isReciprocal: {
+    required: true,
+    type: Boolean,
+  },
+});
+
+relationshipSchema.pre('save', function(next) {
+  const { firstPerson, secondPerson } = this;
+  const uidOne = firstPerson.id;
+  const uidTwo = secondPerson.id;
+  const rshipId = this._id;
+  User.findByIdAndUpdate(
+    uidOne,
+    {$push: {relationships: rshipId}},
+    (err, first) => {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      console.log(`First user: ${JSON.stringify(first)}`);
+      if (first) {
+        User.findByIdAndUpdate(
+          uidTwo,
+          {$push: {relationships: rshipId}},
+          (err, second) => {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            if (second) {
+              return next(null);
+            } else {
+              return next(new Error(`Couldn't find user with id ${uidTwo}`));
+            }
+          },
+        );
+      } else {
+        return next(new Error(`Couldn't find user with id ${uidOne}`));
+      }
+    },
+  );
+});
+
+module.exports = mongoose.model("Relationship", relationshipSchema);
