@@ -72,6 +72,7 @@ const searchUsersReducer = (state = initialState, action) => {
         {},
         state,
         {
+          searchResults: [],
           sharesInProgress: {},
           shareResults: {},
         }

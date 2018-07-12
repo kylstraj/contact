@@ -5,10 +5,10 @@ import renderTextField from '../../utils/renderTextField';
 
 let UsersSearchBox = ({ handleSubmit }) => (
   <form onSubmit={handleSubmit}>
-    <p>
+    <div>
       <Field autoComplete='off' label='Name' name='userSearch' component={renderTextField} type='text'/>
       <Button color='primary' variant='contained' type='submit'>Search</Button>
-    </p>
+    </div>
   </form>
 );
   
@@ -20,7 +20,7 @@ const UserDisplayCard =
   ({ name, onShareClick, contactUsername, userCredentials, inProgress, shared }) => (
     !inProgress && !shared
       ? (
-        <p className='user-display-card'>
+        <div className='user-display-card'>
           {name} ({contactUsername})
           <Button 
             variant='contained'
@@ -29,18 +29,18 @@ const UserDisplayCard =
           >
             Share Your Info
           </Button>
-        </p>
+        </div>
         )
       : inProgress
         ? (
-          <p className='user-display-card'>
+          <div className='user-display-card'>
             {name} ({contactUsername}) Sharing your info...
-          </p>
+          </div>
           )
         : (
-          <p className='user-display-card'>
+          <div className='user-display-card'>
             You shared your info with {name}!
-          </p>
+          </div>
           )
   );
 
