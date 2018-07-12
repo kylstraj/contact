@@ -34,7 +34,7 @@ router.post('/user/relationship/:otherUsername', auth, function(req, res, next) 
     });
 });
 
-router.post('/user/new_share_info/:otherUsername', auth, function(req, res, next) {
+router.post('/user/share_info/:otherUsername', auth, function(req, res, next) {
   const { username, _id } = req.user;
   const { otherUsername } = req.params;
   Relationship.findByUsers(
@@ -104,8 +104,9 @@ router.post('/user/contacts/verbose', auth, function(req, res, next) {
         console.error(err);
         return next(err);
       } else {
-        const contacts = rships.map(rship =>
-          rship.findOtherUsername(username));
+        const contacts = rships
+          .filter(rship => rship.canSeeOther(username))
+          .map(rship => rship.findOtherUsername(username));
         User.find({username: {$in: contacts}}, function(err, others) {
           if (err) {
             console.error(err);
@@ -164,28 +165,6 @@ router.post('/user/:username/update/:fieldName', auth, function(req, res, next) 
         return res.json(payload);
       } else {
         return res.json({});
-      }
-    });
-});
-
-router.post('/user/share_info/:contactUsername', auth, function(req, res, next) {
-  const { contactUsername } = req.params;
-  User.findOneAndUpdate(
-    {username: contactUsername},
-    {$push: {contacts: req.user._id}},
-    function (err, friend) {
-      if (err) {
-        console.error(err);
-        return next(err);
-      }
-      if (friend) {
-        res.json(
-          {success: `${req.user.username} shared contact info with ${contactUsername}`}
-        );
-      } else {
-        res.json(
-          {error: `Couldn't find ${contactUsername}`}
-        );
       }
     });
 });
