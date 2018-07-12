@@ -9,7 +9,7 @@ import {
 
 const mapStateToProps = state => (
   {
-    credentials: state.main.credentials,
+    contacts: state.main.contacts.map(contact => contact.username),
     inProgress: state.searchUsers.searchInProgress,
     sharesInProgress: state.searchUsers.sharesInProgress,
     shareResults: state.searchUsers.shareResults,
@@ -19,11 +19,10 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    onSearchClick: (searchStr, credentials) => {
+    onSearchClick: (searchStr, contacts) => {
       dispatch(startSearchUsers());
       fetch(`/api/search_users/${searchStr}`,
         {
-          body: JSON.stringify({credentials}),
           credentials: 'include',
           headers: {
             'Accept': 'application/json',
@@ -32,6 +31,14 @@ const mapDispatchToProps = dispatch => (
           method: 'POST',
         })
         .then(res => res.json())
+        .then(users => users.map(user =>
+          Object.assign(
+            {},
+            user,
+            {
+              hasInfo: contacts.indexOf(user.username) >= 0,
+            },
+          )))
         .then(res => {
           dispatch(usersSearched(res));
           return res.users;

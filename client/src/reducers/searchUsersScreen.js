@@ -1,4 +1,5 @@
 import {
+  CONTACTS_FETCHED,
   INFO_SHARED,
   SET_SCREEN,
   START_SEARCH_USERS,
@@ -10,7 +11,9 @@ const initialState = {
   searchInProgress: false,
   searchResults: [],
   sharesInProgress: {},
-  shareResults: {},
+  shareResults: {
+
+  },
 };
 
 const immutPush = (obj, key, val) => {
@@ -21,6 +24,17 @@ const immutPush = (obj, key, val) => {
 
 const searchUsersReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CONTACTS_FETCHED:
+      const contacts = action.contacts.map(contact => contact.username);
+      let shareResultUpdate = {};
+      contacts.forEach(contact => shareResultUpdate[contact] = true);
+      return Object.assign(
+        {},
+        state,
+        {
+          shareResults: shareResultUpdate,
+        },
+      );
     case START_SEARCH_USERS:
       return Object.assign(
         {},
@@ -74,7 +88,6 @@ const searchUsersReducer = (state = initialState, action) => {
         {
           searchResults: [],
           sharesInProgress: {},
-          shareResults: {},
         }
       );
     default:
