@@ -90,7 +90,7 @@ router.post('/user/new_share_info/:otherUsername', auth, function(req, res, next
     });
 });
 
-router.post('/user/contacts/new_verbose', auth, function(req, res, next) {
+router.post('/user/contacts/verbose', auth, function(req, res, next) {
   const { username } = req.user;
   User.findOne({ username }, function (err, user) {
     if (err) {
@@ -113,7 +113,7 @@ router.post('/user/contacts/new_verbose', auth, function(req, res, next) {
           }
           const payload = {
             contacts: others.map(other => ({
-              name: other.name,
+              name: other.fullName,
               username: other.username,
               address: other.address,
               email: other.email,
@@ -202,26 +202,6 @@ router.post('/user/contacts', auth, function(req, res, next) {
     res.json(payload);
   });
 });
-
-router.post('/user/contacts/verbose', printSession, auth, function(req, res, next) {
-  const { user } = req;
-  const { contacts } = user;
-  User.find({_id: {$in: contacts}}, function(err, friends) {
-    if (err) {
-      console.error(err);
-      return next(err);
-    }
-    const payload = { contacts: friends.map(friend => ({
-      address: friend.address,
-      email: friend.email,
-      name: friend.fullName,
-      phone: friend.phone,
-      username: friend.username,
-    })) };
-    res.json(payload);
-  });
-});
-
 
 router.post('/user/contact/:requestee', auth, function(req, res, next) {
   const { requestee } = req.params;
