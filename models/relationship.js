@@ -75,4 +75,23 @@ relationshipSchema.pre('save', function(next) {
   );
 });
 
+relationshipSchema.statics.findByUsers = function (unA, unB, cb) {
+  return this.findOne(
+    {$or: [
+      {'firstPerson.username': unA, 'secondPerson.username': unB},
+      {'firstPerson.username': unB, 'secondPerson.username': unA},
+    ]},
+    cb
+  );
+};
+
+relationshipSchema.methods.findOtherUsername = function (username) {
+  if (this.firstPerson.username === username) 
+    return this.secondPerson.username;
+  else if (this.secondPerson.username === username)
+    return this.firstPerson.username;
+  else
+    return new Error(`${username} is not a member of relationship.`);
+};
+
 module.exports = mongoose.model("Relationship", relationshipSchema);

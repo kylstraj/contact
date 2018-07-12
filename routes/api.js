@@ -21,11 +21,9 @@ router.post('/user', auth, function(req, res, next) {
 router.post('/user/relationship/:otherUsername', auth, function(req, res, next) {
   const { username } = req.user;
   const { otherUsername } = req.params;
-  Relationship.findOne(
-    {$or: [
-      {'firstPerson.username': username, 'secondPerson.username': otherUsername},
-      {'firstPerson.username': otherUsername, 'secondPerson.username': username},
-    ]},
+  Relationship.findByUsers(
+    username, 
+    otherUsername,
     function (err, rship) {
       if (err) {
         console.error(err);
@@ -36,40 +34,99 @@ router.post('/user/relationship/:otherUsername', auth, function(req, res, next) 
     });
 });
 
-router.post('/user/new_relationship/:otherUsername', auth, function(req, res, next) {
+router.post('/user/new_share_info/:otherUsername', auth, function(req, res, next) {
   const { username, _id } = req.user;
   const { otherUsername } = req.params;
-  User.findOne({username: otherUsername}, function (err, other) {
+  Relationship.findByUsers(
+    username,
+    otherUsername,
+    function (err, rship) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      } else if (rship) {
+        rship.firstPerson.username === username
+          ? rship.secondPerson.canSeeInfo = true
+          : rship.firstPerson.canSeeInfo = true;
+        rship.save(err => {
+          if (err) {
+            console.error(err);
+            return next(err);
+          }
+        });
+        return res.json({relationship: rship});
+      } else {
+        User.findOne({username: otherUsername}, function (err, other) {
+          if (err) {
+            console.error(err);
+            return next(err);
+          } else if (!other) {
+            return res.json({error: `Couldn't find user ${otherUsername}`});
+          } else {
+            let rship = new Relationship({
+              firstPerson: {
+                id: _id,
+                username,
+                canSeeInfo: false,
+              },
+              secondPerson: {
+                id: other._id,
+                username: otherUsername,
+                canSeeInfo: true,
+              },
+              isReciprocal: false,
+            });
+            rship.save(function (err) {
+              if (err) {
+                console.error(err);
+                return next(err);
+              } else {
+                return res.json(rship);
+              }
+            });
+          }
+        });
+      }
+    });
+});
+
+router.post('/user/contacts/new_verbose', auth, function(req, res, next) {
+  const { username } = req.user;
+  User.findOne({ username }, function (err, user) {
     if (err) {
       console.error(err);
       return next(err);
-    } else if (!other) {
-      return res.json({error: `Couldn't find user ${otherUsername}`});
-    } else {
-      let rship = new Relationship({
-        firstPerson: {
-          id: _id,
-          username,
-          canSeeInfo: false,
-        },
-        secondPerson: {
-          id: other._id,
-          username: otherUsername,
-          canSeeInfo: true,
-        },
-        isReciprocal: false,
-      });
-      rship.save(function (err) {
-        if (err) {
-          console.error(err);
-          return next(err);
-        } else {
-          return res.json(rship);
-        }
-      });
+    } else if (!user) {
+      return res.json({error: 'You are not logged in'});
     }
+    Relationship.find({_id: {$in: user.relationships}}, function(err, rships) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      } else {
+        const contacts = rships.map(rship =>
+          rship.findOtherUsername(username));
+        User.find({username: {$in: contacts}}, function(err, others) {
+          if (err) {
+            console.error(err);
+            return next(err);
+          }
+          const payload = {
+            contacts: others.map(other => ({
+              name: other.name,
+              username: other.username,
+              address: other.address,
+              email: other.email,
+              phone: other.phone,
+            })),
+          };
+          return res.json(payload);
+        });
+      }
+    });
   });
 });
+
 
 router.post('/user/:username/update/:fieldName', auth, function(req, res, next) {
   if (!req.body)
@@ -113,7 +170,6 @@ router.post('/user/:username/update/:fieldName', auth, function(req, res, next) 
 
 router.post('/user/share_info/:contactUsername', auth, function(req, res, next) {
   const { contactUsername } = req.params;
-
   User.findOneAndUpdate(
     {username: contactUsername},
     {$push: {contacts: req.user._id}},
