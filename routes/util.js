@@ -63,4 +63,17 @@ router.post('/invite/:inviteeUsername', auth, function(req, res, next) {
   });
 });
 
+router.post('/user/invitations/:type', auth, function(req, res, next) {
+  const { user } = req;
+  const { type } = req.params;
+  Invitation.find({_id: {$in: user.invitations[type]}}, function (err, invs) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else {
+      return res.json(invs);
+    }
+  });
+});
+
 module.exports = router;
