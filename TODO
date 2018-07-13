@@ -1,4 +1,3 @@
-- Create relationships model so that I can know/control who has my contact info
 - Create invitations model so that people can request to exchange info
 - Create mobile app
 - Implement more advanced username/password control (forgot my password, etc.)

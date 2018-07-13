@@ -25,8 +25,11 @@ var userSchema = mongoose.Schema({
     maxlength: 255,
     type: String,
   },
-  contacts: [ mongoose.Schema.Types.ObjectId ],
   relationships: [ mongoose.Schema.Types.ObjectId ],
+  invitations: {
+    made: [ mongoose.Schema.Types.ObjectId ],
+    received: [ mongoose.Schema.Types.ObjectId ],
+  },
   passwordHash: {
     required: true,
     type: String,
