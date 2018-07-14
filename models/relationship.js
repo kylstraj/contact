@@ -103,4 +103,13 @@ relationshipSchema.methods.canSeeOther = function (username) {
     return new Error(`${username} is not a member of relationship.`);
 };
 
+relationshipSchema.methods.canBeSeenByOther = function (username) {
+  if (this.firstPerson.username === username)
+    return this.secondPerson.canSeeInfo;
+  else if (this.secondPerson.username === username)
+    return this.firstPerson.canSeeInfo;
+  else
+    return new Error(`${username} is not a member of relationship.`);
+};
+
 module.exports = mongoose.model("Relationship", relationshipSchema);

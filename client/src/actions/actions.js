@@ -34,9 +34,10 @@ export const closeEditInfoForm = field => (
   }
 );
 
-export const contactsFetched = (contacts) => (
+export const contactsFetched = (contacts, sharees) => (
   {
     contacts,
+    sharees,
     type: CONTACTS_FETCHED,
   }
 );

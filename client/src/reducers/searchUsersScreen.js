@@ -11,9 +11,7 @@ const initialState = {
   searchInProgress: false,
   searchResults: [],
   sharesInProgress: {},
-  shareResults: {
-
-  },
+  shareResults: {},
 };
 
 const immutPush = (obj, key, val) => {
@@ -25,9 +23,9 @@ const immutPush = (obj, key, val) => {
 const searchUsersReducer = (state = initialState, action) => {
   switch (action.type) {
     case CONTACTS_FETCHED:
-      const contacts = action.contacts.map(contact => contact.username);
+      const { sharees } = action;
       let shareResultUpdate = {};
-      contacts.forEach(contact => shareResultUpdate[contact] = true);
+      sharees.forEach(sharee => shareResultUpdate[sharee] = true);
       return Object.assign(
         {},
         state,

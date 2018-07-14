@@ -57,7 +57,7 @@ const mapDispatchToProps = dispatch => (
           })
           .then(res => res.json())
           .then(res => {
-            dispatch(contactsFetched(res.contacts));
+            dispatch(contactsFetched(res.contacts, res.sharees));
             return res.contacts;
           });
       },

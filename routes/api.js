@@ -107,6 +107,9 @@ router.post('/user/contacts/verbose', auth, function(req, res, next) {
         const contacts = rships
           .filter(rship => rship.canSeeOther(username))
           .map(rship => rship.findOtherUsername(username));
+        const sharees = rships
+          .filter(rship => rship.canBeSeenByOther(username))
+          .map(rship => rship.findOtherUsername(username));
         User.find({username: {$in: contacts}}, function(err, others) {
           if (err) {
             console.error(err);
@@ -118,8 +121,8 @@ router.post('/user/contacts/verbose', auth, function(req, res, next) {
               username: other.username,
               address: other.address,
               email: other.email,
-              phone: other.phone,
-            })),
+              phone: other.phone})),
+            sharees,
           };
           return res.json(payload);
         });

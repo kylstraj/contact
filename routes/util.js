@@ -27,7 +27,7 @@ router.get('/new_relationship/:uidOne/:uidTwo', function(req, res, next) {
   });
 });
 
-router.post('/invite/:inviteeUsername', auth, function(req, res, next) {
+router.post('/user/invite/:inviteeUsername', auth, function(req, res, next) {
   const { inviteeUsername } = req.params;
   const { reciprocal } = req.query;
   const inviter = req.user;
@@ -74,6 +74,17 @@ router.post('/user/invitations/:type', auth, function(req, res, next) {
       return res.json(invs);
     }
   });
+});
+
+router.post('/user/accept', auth, function(req, res, next) {
+  const { inviter, invId } = req.query;
+  const { user } = req;
+  if (!(inviter || invId))
+    return res.json({error: 'Must provide either inviter or invId as a query param'});
+  else if (inviter) {
+    Invitation.find({'inviter.username': inviter, 'invitee.username': user.username}, /*TODO*/);
+  } else {
+  }
 });
 
 module.exports = router;
