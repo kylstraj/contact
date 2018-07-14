@@ -78,33 +78,36 @@ invitationSchema.methods.delete = function(cb) {
 }
 
 invitationSchema.methods.accept = function(cb) {
-  this.accepted = true;
-  this.save(err => {
+  inv = this;
+  inv.accepted = true;
+  inv.save(err => {
     if (err)
       return cb(err);
     Relationship.findByUsers(
-      this.inviter.username, 
-      this.invitee.username, 
+      inv.inviter.username, 
+      inv.invitee.username, 
       function(err, rship) {
         if (err) 
           return cb(err);
         if (!rship) {
           rship = new Relationship({
             firstPerson: {
-              id: this.inviter.id,
-              username: this.inviter.username,
+              id: inv.inviter.id,
+              username: inv.inviter.username,
               canSeeInfo: true,
             },
             secondPerson: {
-              id: this.invitee.id,
-              username: this.invitee.username,
-              canSeeInfo: this.isReciprocal,
+              id: inv.invitee.id,
+              username: inv.invitee.username,
+              canSeeInfo: inv.isReciprocal,
             },
-            isReciprocal: this.isReciprocal,
+            isReciprocal: inv.isReciprocal,
           });
           rship.save(cb);
         } else {
-          rship.firstPerson.username === this.inviter.username
+          console.log(`rship: ${rship}`);
+          console.log(`inv.inviter: ${inv.inviter}`);
+          rship.firstPerson.username === inv.inviter.username
             ? rship.firstPerson.canSeeInfo = true
             : rship.secondPerson.canSeeInfo = true;
           rship.save(cb);
