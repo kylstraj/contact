@@ -73,14 +73,45 @@ invitationSchema.pre('save', function(next) {
     });
 });
 
-invitationSchema.methods.delete = function(cb) {
-  this.model('Invitation').deleteOne({_id: this._id}, cb);
-}
+invitationSchema.pre('remove', function(next) {
+  const { inviter, invitee } = this;
+  const inviterUid = inviter.id;
+  const inviteeUid = invitee.id;
+  const id = this._id;
+  User.findByIdAndUpdate(
+    inviterUid,
+    {$pull: {'invitations.made': id}},
+    function (err, inviter) {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (inviter) {
+        User.findByIdAndUpdate(
+          inviteeUid,
+          {$pull: {'invitations.received': id}},
+          function (err, invitee) {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            if (invitee) {
+              return next(null);
+            } else {
+              return next(new Error(`Couldn't find user ${invitee.username}`));
+            }
+          });
+      } else {
+        return next(new Error(`Couldn't find user ${inviter.username}`));
+      }
+    });
+});
+
 
 invitationSchema.methods.accept = function(cb) {
   inv = this;
   inv.accepted = true;
-  inv.save(err => {
+  inv.remove((err, inv) => {
     if (err)
       return cb(err);
     Relationship.findByUsers(
@@ -118,7 +149,7 @@ invitationSchema.methods.accept = function(cb) {
 
 invitationSchema.methods.reject = function(cb) {
   this.rejected = true;
-  this.save(cb);
+  this.remove(cb);
 };
 
 module.exports = mongoose.model('Invitation', invitationSchema);
