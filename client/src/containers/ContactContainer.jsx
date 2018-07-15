@@ -28,6 +28,7 @@ const mapDispatchToProps = dispatch => (
       'Register': () => dispatch(setScreen(SCREENS.REGISTER)),
       'Search Users': () => dispatch(setScreen(SCREENS.SEARCH)),
       'About you': (user) => dispatch(setScreen(SCREENS.USER, {user})),
+      'Your Invitations': () => dispatch(setScreen(SCREENS.INVITATIONS)),
       'Log Out': () => {
         fetch('/api/user/logout',
           {

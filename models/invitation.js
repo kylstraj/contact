@@ -107,7 +107,6 @@ invitationSchema.pre('remove', function(next) {
     });
 });
 
-
 invitationSchema.methods.accept = function(cb) {
   inv = this;
   inv.accepted = true;
