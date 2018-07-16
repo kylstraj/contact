@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { 
   contactsFetched,
+  invitationsFetched,
   loginFailure,
   loginSuccess,
   logout,
   setScreen, 
   startFetchContacts,
+  startFetchInvitations,
   SCREENS,
 } from '../actions/actions';
 import ContactView from '../components/ContactView';
@@ -47,7 +49,7 @@ const mapDispatchToProps = dispatch => (
       onLoginSuccess: (credentials, user) => {
         dispatch(loginSuccess(credentials, user));
         dispatch(startFetchContacts());
-        return fetch('/api/user/contacts/verbose',
+        fetch('/api/user/contacts/verbose',
           {
             credentials: 'same-origin',
             headers: {
@@ -60,6 +62,21 @@ const mapDispatchToProps = dispatch => (
           .then(res => {
             dispatch(contactsFetched(res.contacts, res.sharees));
             return res.contacts;
+          });
+        dispatch(startFetchInvitations());
+        fetch('/api/user/invitations',
+          {
+            credentials: 'same-origin',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+          })
+          .then(res => res.json())
+          .then(res => {
+            dispatch(invitationsFetched(res))
+            return res;
           });
       },
       onLoginFailure: (error) => dispatch(loginFailure(error)),

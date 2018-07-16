@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
+var Invitation = require('../models/invitation');
 var Relationship = require('../models/relationship');
+var User = require('../models/user');
 var pwd = require('../private/pwd');
 var auth = require('../middleware/auth');
 var printSession = require('../middleware/printSession');
@@ -298,6 +299,42 @@ router.post('/new_user', function(req, res, next) {
         }
       });
       return res.json({ username, name, email, phone, address });
+    }
+  });
+});
+
+router.post('/user/invitations', auth, function(req, res, next) {
+  const { user } = req;
+  const { type } = req.params;
+  Invitation.find({_id: {$in: user.invitations.made}}, function (err, made) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else {
+      Invitation.find({_id: {$in: user.invitations.received}}, function (err, received) {
+        if (err) {
+          console.error(err);
+          return next(err);
+        } else {
+          return res.json({made, received});
+        }
+      });
+    }
+  });
+});
+
+
+
+
+router.post('/user/invitations/:type', auth, function(req, res, next) {
+  const { user } = req;
+  const { type } = req.params;
+  Invitation.find({_id: {$in: user.invitations[type]}}, function (err, invs) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else {
+      return res.json(invs);
     }
   });
 });

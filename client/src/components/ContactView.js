@@ -5,7 +5,7 @@ import HomeScreen from './screens/home';
 import LoginScreen from './screens/login';
 import RegisterScreenContainer from '../containers/RegisterScreenContainer';
 import ContactsScreenContainer from '../containers/ContactsScreenContainer';
-import InvitationScreen from './screens/invitations.js';
+import InvitationScreenContainer from '../containers/InvitationScreenContainer';
 import SearchUsersScreenContainer from '../containers/SearchUsersScreenContainer';
 import UserScreenContainer from '../containers/UserScreenContainer';
 import Nav from './Nav';
@@ -32,7 +32,7 @@ const renderScreen = state => {
     case SCREENS.LOGIN:
       return (<LoginScreen loginFlash={loginFlash} onLoginAttempts={onLoginAttempts}/>);
     case SCREENS.INVITATIONS:
-      return (<InvitationScreen/>);
+      return (<InvitationScreenContainer/>);
     case SCREENS.REGISTER:
       return (<RegisterScreenContainer/>);
     case SCREENS.USER:

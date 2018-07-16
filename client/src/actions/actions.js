@@ -3,6 +3,9 @@ export const CONTACTS_FETCHED = 'CONTACTS_FETCHED';
 export const FORM_FIELD_CHANGE = 'FORM_FIELD_CHANGE';
 export const INFO_EDITED = 'INFO_EDITED';
 export const INFO_SHARED = 'INFO_SHARED';
+export const INVITATION_ACCEPTED = 'INVITATION_ACCEPTED';
+export const INVITATION_REJECTED = 'INVITATION_REJECTED';
+export const INVITATIONS_FETCHED = 'INVITATIONS_FETCHED';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
@@ -13,7 +16,9 @@ export const SET_SCREEN = 'SET_SCREEN';
 export const START_EDIT_INFO = 'START_EDIT_INFO';
 export const START_SHARE_INFO = 'START_SHARE_INFO';
 export const START_FETCH_CONTACTS = 'START_FETCH_CONTACTS';
+export const START_FETCH_INVITATIONS = 'START_FETCH_INVITATIONS';
 export const START_REGISTRATION_ATTEMPT = 'START_REGISTRATION_ATTEMPT';
+export const START_RESPOND_TO_INVITATION = 'START_RESPOND_TO_INVITATION';
 export const START_SEARCH_USERS = 'START_SEARCH_USERS';
 export const TOGGLE_CONTACT_OPEN = 'TOGGLE_CONTACT_OPEN';
 export const USERS_SEARCHED = 'USERS_SEARCHED';
@@ -64,6 +69,27 @@ export const infoShared = (contactUsername) => (
   {
     contactUsername,
     type: INFO_SHARED,
+  }
+);
+
+export const invitationAccepted = (inviter) => (
+  {
+    inviter,
+    type: INVITATION_ACCEPTED,
+  }
+);
+
+export const invitationRejected = (inviter) => (
+  {
+    inviter,
+    type: INVITATION_REJECTED,
+  }
+);
+
+export const invitationsFetched = (invitations) => (
+  {
+    invitations,
+    type: INVITATIONS_FETCHED,
   }
 );
 
@@ -139,9 +165,22 @@ export const startFetchContacts = () => (
   }
 );
 
+export const startFetchInvitations = () => (
+  {
+    type: START_FETCH_INVITATIONS,
+  }
+);
+
 export const startRegistrationAttempt = () => (
   {
     type: START_REGISTRATION_ATTEMPT,
+  }
+);
+
+export const startRespondToInvitation = (inviter) => (
+  {
+    inviter,
+    type: START_RESPOND_TO_INVITATION,
   }
 );
 
