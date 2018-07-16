@@ -6,6 +6,7 @@ import {
   invitationAccepted,
   invitationRejected,
 } from '../actions/actions';
+import { updateContacts } from '../actions/ajax';
 
 const mapStateToProps = state => (
   {
@@ -19,6 +20,7 @@ const mapDispatchToProps = dispatch => (
       dispatch(startRespondToInvitation(inviter));
       apiFetch(`/api/user/accept?inviter=${inviter}`)
         .then(() => dispatch(invitationAccepted(inviter)));
+      updateContacts(dispatch);
     },
     rejectInvitation: inviter => {
       dispatch(startRespondToInvitation(inviter));
