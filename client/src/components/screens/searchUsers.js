@@ -31,60 +31,97 @@ const ShareOrSharedEmblem = ({ shared, onShareClick }) =>
         Info Shared
       </Button>);
 
-const RequestOrHasEmblem = ({ has }) =>
-  !has
+const RequestRequestedOrHasEmblem = ({ requested, has, onRequestClick }) =>
+  has
     ? (<Button
-        variant='contained'
-        color='primary'>
-        Request Info
-      </Button>)
-    : (<Button
         variant='contained'
         color='primary'
         disabled={true}>
         Info Had
-      </Button>);
-        
-     
+      </Button>)
+    : requested
+      ? (<Button
+          variant='contained'
+          color='primary'
+          disabled={true}>
+          Info Requested
+        </Button>)
+      : (<Button
+          variant='contained'
+          color='primary'
+          onClick={onRequestClick}>
+          Request Info
+        </Button>);
 
 const UserDisplayCard =
-  ({ name, onShareClick, contactUsername, inProgress, sharedInfo, hasInfo }) => (
+  ({ 
+    name, 
+    onShareClick, 
+    onRequestClick, 
+    contactUsername, 
+    inProgress, 
+    sharedInfo, 
+    hasInfo, 
+    requestedInfo
+  }) => (
     <div className='user-display-card'>
       {name} ({contactUsername})
       <ShareOrSharedEmblem 
         shared={sharedInfo} 
         onShareClick={() => onShareClick(contactUsername)}
       />
-      <RequestOrHasEmblem has={hasInfo}/>
+      <RequestRequestedOrHasEmblem 
+        has={hasInfo} 
+        requested={requestedInfo}
+        onRequestClick={() => onRequestClick(contactUsername)}
+      />
     </div>
   );
 
 const renderUserCards = 
-  (contactUsers, onShareClick, sharesInProgress, shareResults) =>
+  (contactUsers, onShareClick, onRequestClick, sharesInProgress, shareResults, requestsMade) =>
     contactUsers.map(contactUser => 
       <UserDisplayCard 
         contactUsername={contactUser.username}
         key={contactUser.username}
         name={contactUser.name} 
         onShareClick={onShareClick}
+        onRequestClick={onRequestClick}
         inProgress={sharesInProgress[contactUser.username]}
         sharedInfo={shareResults[contactUser.username]}
         hasInfo={contactUser.hasInfo}
+        requestedInfo={requestsMade[contactUser.username]}
       />
     );
 
 const UserDisplayBox = 
-  ({ contactUsers, onShareClick, sharesInProgress, shareResults }) => (
+  ({ 
+    contactUsers, 
+    onRequestClick,
+    onShareClick, 
+    sharesInProgress, 
+    shareResults, 
+    requestsMade, 
+  }) => (
     <div>
-      {renderUserCards(contactUsers, onShareClick, sharesInProgress, shareResults)}
+      {renderUserCards(
+        contactUsers, 
+        onShareClick, 
+        onRequestClick, 
+        sharesInProgress, 
+        shareResults, 
+        requestsMade
+      )}
     </div>
   );
 
 const SearchUsersScreen = (
   { 
     contacts,
+    onRequestClick,
     onSearchClick, 
     onShareClick, 
+    requestsMade,
     sharesInProgress,
     shareResults,
     usersFound 
@@ -94,7 +131,9 @@ const SearchUsersScreen = (
     <UsersSearchBox onSubmit={ data => onSearchClick(data.userSearch, contacts) } />
     <UserDisplayBox 
       contactUsers={usersFound} 
+      onRequestClick={onRequestClick}
       onShareClick={onShareClick} 
+      requestsMade={requestsMade}
       sharesInProgress={sharesInProgress}
       shareResults={shareResults}
     />

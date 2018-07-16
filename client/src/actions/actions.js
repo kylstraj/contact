@@ -5,6 +5,7 @@ export const INFO_EDITED = 'INFO_EDITED';
 export const INFO_SHARED = 'INFO_SHARED';
 export const INVITATION_ACCEPTED = 'INVITATION_ACCEPTED';
 export const INVITATION_REJECTED = 'INVITATION_REJECTED';
+export const INVITATION_SENT = 'INVITATION_SENT';
 export const INVITATIONS_FETCHED = 'INVITATIONS_FETCHED';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -20,6 +21,7 @@ export const START_FETCH_INVITATIONS = 'START_FETCH_INVITATIONS';
 export const START_REGISTRATION_ATTEMPT = 'START_REGISTRATION_ATTEMPT';
 export const START_RESPOND_TO_INVITATION = 'START_RESPOND_TO_INVITATION';
 export const START_SEARCH_USERS = 'START_SEARCH_USERS';
+export const START_SEND_INVITE = 'START_SEND_INVITE';
 export const TOGGLE_CONTACT_OPEN = 'TOGGLE_CONTACT_OPEN';
 export const USERS_SEARCHED = 'USERS_SEARCHED';
 
@@ -86,6 +88,13 @@ export const invitationRejected = (inviter) => (
   }
 );
 
+export const invitationSent = (invitation) => (
+  {
+    invitation,
+    type: INVITATION_SENT,
+  }
+);
+
 export const invitationsFetched = (invitations) => (
   {
     invitations,
@@ -149,6 +158,13 @@ export const startEditInfo = (field, value) => (
     field,
     type: START_EDIT_INFO,
     value,
+  }
+);
+
+export const startSendInvite = (invitee) => (
+  {
+    invitee,
+    type: START_SEND_INVITE,
   }
 );
 

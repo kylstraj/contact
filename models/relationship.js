@@ -51,7 +51,6 @@ relationshipSchema.pre('save', function(next) {
         console.error(err);
         return next(err);
       }
-      console.log(`First user: ${JSON.stringify(first)}`);
       if (first) {
         User.findByIdAndUpdate(
           uidTwo,
@@ -74,6 +73,43 @@ relationshipSchema.pre('save', function(next) {
     },
   );
 });
+
+relationshipSchema.pre('remove', function(next) {
+  const { firstPerson, secondPerson } = this;
+  const uidOne = firstPerson.id;
+  const uidTwo = secondPerson.id;
+  const rshipId = this._id;
+  User.findByIdAndUpdate(
+    uidOne,
+    {$pull: {relationships: rshipId}},
+    (err, first) => {
+      if (err) {
+        console.error(err);
+        return next(err);
+      }
+      if (first) {
+        User.findByIdAndUpdate(
+          uidTwo,
+          {$pull: {relationships: rshipId}},
+          (err, second) => {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            if (second) {
+              return next(null);
+            } else {
+              return next(new Error(`Couldn't find user with id ${uidTwo}`));
+            }
+          },
+        );
+      } else {
+        return next(new Error(`Couldn't find user with id ${uidOne}`));
+      }
+    },
+  );
+});
+
 
 relationshipSchema.statics.findByUsers = function (unA, unB, cb) {
   return this.findOne(

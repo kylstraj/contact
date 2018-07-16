@@ -1,9 +1,11 @@
 import {
   INVITATION_ACCEPTED,
   INVITATION_REJECTED,
+  INVITATION_SENT,
   INVITATIONS_FETCHED,
   START_FETCH_INVITATIONS,
   START_RESPOND_TO_INVITATION,
+  START_SEND_INVITE,
 } from '../actions/actions';
   
 
@@ -44,6 +46,20 @@ const invitationsReducer = (state = initialState, action) => {
               received: state.invitations.received.filter(inv => 
                 inv.inviter.username !== action.inviter
               ),
+            }
+          ),
+        },
+      );
+    case INVITATION_SENT:
+      return Object.assign(
+        {},
+        state,
+        {
+          invitations: Object.assign(
+            {},
+            state.invitations,
+            {
+              made: state.invitations.made.slice(0).push(action.invitation.invitee.username),
             }
           ),
         },

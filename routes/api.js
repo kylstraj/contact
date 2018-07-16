@@ -440,4 +440,84 @@ router.post('/user/reject', auth, function(req, res, next) {
   }
 });
 
+router.post('/user/rescind_info/:otherUsername', auth, function (req, res, next) {
+  const { otherUsername } = req.params;
+  const { user } = req;
+  const { username } = user;
+  Relationship.findByUsers(username, otherUsername, function (err, rship) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else if (!rship) {
+      return res.json(
+        {error: `No relationship exists between ${username} and ${otherUsername}`}
+      );
+    } else {
+      rship.firstPerson.username === username
+        ? rship.secondPerson.canSeeInfo = false
+        : rship.firstPerson.canSeeInfo = false;
+      if (
+        (!rship.firstPerson.canSeeInfo && !rship.secondPerson.canSeeInfo) ||
+        rship.isReciprocal
+      )
+        {
+        rship.remove((err, rship) => {
+          if (err) {
+            console.error(err);
+            return next(err);
+          }
+          return res.json(rship);
+        });
+      } else {
+        rship.save((err) => {
+          if (err) {
+            console.error(err);
+            return next(err);
+          }
+          return res.json(rship);
+        });
+      }
+    }
+  });
+});
+
+router.post('/user/invite/:inviteeUsername', auth, function(req, res, next) {
+  const { inviteeUsername } = req.params;
+  const { reciprocal } = req.query;
+  const inviter = req.user;
+  console.log(`inviter: ${JSON.stringify(inviter)}`);
+  User.findOne({username: inviteeUsername}, function (err, invitee) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else if (!invitee) {
+      return res.json({error: `Couldn't find user ${inviteeUsername}`});
+    } else {
+      let inv = new Invitation({
+        inviter: {
+          username: inviter.username,
+          id: inviter._id,
+        },
+        invitee: {
+          username: inviteeUsername,
+          id: invitee.id,
+        },
+        isReciprocal: reciprocal || false,
+        accepted: false,
+        rejected: false,
+      });
+      inv.save(err => {
+        if (err) {
+          console.error(err);
+          return next(err);
+        } else {
+          return res.json(inv);
+        }
+      });
+    }
+  });
+});
+
+
+
 module.exports = router;
