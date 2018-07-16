@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import apiFetch from '../utils/apiFetch';
+import ContactView from '../components/ContactView';
 import { 
   contactsFetched,
   invitationsFetched,
@@ -11,7 +13,10 @@ import {
   startFetchInvitations,
   SCREENS,
 } from '../actions/actions';
-import ContactView from '../components/ContactView';
+import {
+  updateContacts,
+  updateInvitations,
+} from '../actions/ajax';
 
 const mapStateToProps = (state, ownProps) => (
   {
@@ -31,53 +36,13 @@ const mapDispatchToProps = dispatch => (
       'Search Users': () => dispatch(setScreen(SCREENS.SEARCH)),
       'About you': (user) => dispatch(setScreen(SCREENS.USER, {user})),
       'Your Invitations': () => dispatch(setScreen(SCREENS.INVITATIONS)),
-      'Log Out': () => {
-        fetch('/api/user/logout',
-          {
-            credentials: 'include',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          })
-          .then(res => res.json())
-          .then(res => dispatch(logout()));
-      },
+      'Log Out': () => apiFetch('/api/user/logout').then(() => dispatch(logout())),
     },
     onLoginAttempts: {
       onLoginSuccess: (credentials, user) => {
         dispatch(loginSuccess(credentials, user));
-        dispatch(startFetchContacts());
-        fetch('/api/user/contacts/verbose',
-          {
-            credentials: 'same-origin',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          })
-          .then(res => res.json())
-          .then(res => {
-            dispatch(contactsFetched(res.contacts, res.sharees));
-            return res.contacts;
-          });
-        dispatch(startFetchInvitations());
-        fetch('/api/user/invitations',
-          {
-            credentials: 'same-origin',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          })
-          .then(res => res.json())
-          .then(res => {
-            dispatch(invitationsFetched(res))
-            return res;
-          });
+        updateContacts(dispatch);
+        updateInvitations(dispatch);
       },
       onLoginFailure: (error) => dispatch(loginFailure(error)),
     },

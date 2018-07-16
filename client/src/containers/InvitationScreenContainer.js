@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import apiFetch from '../utils/apiFetch';
 import InvitationScreen from '../components/screens/invitations';
 import {
   startRespondToInvitation,
@@ -16,31 +17,13 @@ const mapDispatchToProps = dispatch => (
   {
     acceptInvitation: inviter => {
       dispatch(startRespondToInvitation(inviter));
-      fetch(`/api/user/accept?inviter=${inviter}`,
-        {
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-        })
-        .then(res => res.json())
-        .then(res => dispatch(invitationAccepted(inviter)));
+      apiFetch(`/api/user/accept?inviter=${inviter}`)
+        .then(() => dispatch(invitationAccepted(inviter)));
     },
     rejectInvitation: inviter => {
       dispatch(startRespondToInvitation(inviter));
-      fetch(`/api/user/reject?inviter=${inviter}`,
-        {
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-        })
-        .then(res => res.json())
-        .then(res => dispatch(invitationRejected(inviter)));
+      apiFetch(`/api/user/reject?inviter=${inviter}`)
+        .then(() => dispatch(invitationRejected(inviter)));
     },
   }
 );
