@@ -338,6 +338,106 @@ router.post('/user/invitations/:type', auth, function(req, res, next) {
     }
   });
 });
+router.post('/user/accept', auth, function(req, res, next) {
+  const { inviter, invId } = req.query;
+  const { user } = req;
+  if (!(inviter || invId))
+    return res.json({error: 'Must provide either inviter or invId as a query param'});
+  else if (inviter) {
+    Invitation.findOne(
+      {'inviter.username': inviter, 'invitee.username': user.username}, 
+      function (err, inv) {
+        if (err) {
+          console.error(err);
+          return next(err);
+        } else if (!inv) {
+          return res.json(
+            {error: `User ${user.username} has no open invitations from user ${inviter}`}
+          );
+        } else {
+          console.log(inv);
+          inv.accept(err => {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            return res.json({accepted: inv._id});
+          });
+        }
+      });
+  } else {
+    Invitation.findOne(
+      {_id: invId, 'invitee.username': user.username},
+      function (err, inv) {
+        if (err) {
+          console.error(err);
+          return next(err);
+        } else if (!inv) {
+          return res.json(
+            {error: `Invitation with id ${invId} is not one of ${user.username}'s invitations`}
+          );
+        } else {
+          inv.accept(err => {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            return res.json({accepted: inv._id});
+          });
+        }
+      });
+  }
+});
 
+router.post('/user/reject', auth, function(req, res, next) {
+  const { inviter, invId } = req.query;
+  const { user } = req;
+  if (!(inviter || invId))
+    return res.json({error: 'Must provide either inviter or invId as a query param'});
+  else if (inviter) {
+    Invitation.findOne(
+      {'inviter.username': inviter, 'invitee.username': user.username}, 
+      function (err, inv) {
+        if (err) {
+          console.error(err);
+          return next(err);
+        } else if (!inv) {
+          return res.json(
+            {error: `User ${user.username} has no open invitations from user ${inviter}`}
+          );
+        } else {
+          console.log(inv);
+          inv.reject(err => {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            return res.json({rejected: inv._id});
+          });
+        }
+      });
+  } else {
+    Invitation.findOne(
+      {_id: invId, 'invitee.username': user.username},
+      function (err, inv) {
+        if (err) {
+          console.error(err);
+          return next(err);
+        } else if (!inv) {
+          return res.json(
+            {error: `Invitation with id ${invId} is not one of ${user.username}'s invitations`}
+          );
+        } else {
+          inv.reject(err => {
+            if (err) {
+              console.error(err);
+              return next(err);
+            }
+            return res.json({rejected: inv._id});
+          });
+        }
+      });
+  }
+});
 
 module.exports = router;

@@ -21,7 +21,15 @@ const invitationsReducer = (state = initialState, action) => {
         {},
         state,
         {
-          invitations: state.invitations.filter(inv => inv.inviter.username !== action.inviter),
+          invitations: Object.assign(
+            {},
+            state.invitations,
+            {
+              received: state.invitations.received.filter(inv => 
+                inv.inviter.username !== action.inviter
+              ),
+            }
+          ),
         },
       );
     case INVITATION_REJECTED:
@@ -29,7 +37,15 @@ const invitationsReducer = (state = initialState, action) => {
         {},
         state,
         {
-          invitations: state.invitations.filter(inv => inv.inviter.username !== action.inviter),
+          invitations: Object.assign(
+            {},
+            state.invitations,
+            {
+              received: state.invitations.received.filter(inv => 
+                inv.inviter.username !== action.inviter
+              ),
+            }
+          ),
         },
       );
     case INVITATIONS_FETCHED:
