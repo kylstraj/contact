@@ -67,8 +67,11 @@ const ContactView = props => {
       ? (
         <div className={props.classes.main}>
           <Header/>
-          <Nav clicks={props.clicks} 
-            titles={props.main.user !== {} ? screenTitlesLoggedIn : screenTitlesDefault}/>
+          <Nav 
+            clicks={props.clicks} 
+            contacts={props.main.contacts}
+            titles={props.main.user !== {} ? screenTitlesLoggedIn : screenTitlesDefault}
+          />
           { renderScreen(props) }
           <footer>{JSON.stringify(props)}</footer>
         </div>
@@ -76,8 +79,11 @@ const ContactView = props => {
       : (
         <div className={props.classes.main}>
           <Header/>
-          <Nav clicks={props.clicks} 
-            titles={props.main.loggedIn ? screenTitlesLoggedIn : screenTitlesDefault}/>
+          <Nav 
+            clicks={props.clicks} 
+            contacts={props.main.contacts}
+            titles={props.main.loggedIn ? screenTitlesLoggedIn : screenTitlesDefault}
+          />
           { renderScreen(props) }
         </div>
         )

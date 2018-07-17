@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => (
   {
     clicks: {
       'Home': () => dispatch(setScreen(SCREENS.HOME)),
-      'Contacts': () => dispatch(setScreen(SCREENS.CONTACTS)),
+      'Contacts': (contacts) => dispatch(setScreen(SCREENS.CONTACTS, { contacts })),
       'Log In': () => dispatch(setScreen(SCREENS.LOGIN)),
       'Register': () => dispatch(setScreen(SCREENS.REGISTER)),
       'Search Users': () => dispatch(setScreen(SCREENS.SEARCH)),

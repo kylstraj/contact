@@ -2,7 +2,9 @@ import {
   CONTACTS_FETCHED,
   CONTACTS_SEARCHED,
   FILTER_CONTACTS,
+  SET_SCREEN,
   TOGGLE_CONTACT_OPEN,
+  SCREENS,
 } from '../actions/actions';
 
 const initialState = {
@@ -30,6 +32,18 @@ const contactsScreenReducer = (state = initialState, action) => {
           contactsDisplayed: action.contacts,
         },
       );
+    case SET_SCREEN:
+      if (action.screen === SCREENS.CONTACTS) {
+        return Object.assign(
+          {},
+          state,
+          {
+            contactsDisplayed: action.data.contacts,
+          }
+        );
+      } else {
+        return state;
+      }
     case TOGGLE_CONTACT_OPEN: 
       contactsOpen[action.contact.username]
         ? contactsOpenUpdate[action.contact.username] = undefined

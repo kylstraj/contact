@@ -7,9 +7,9 @@ let NavButton = ({ classes, onClick, title }) => (
 );
 
 
-const Nav = ({ classes, clicks, titles }) => (
+const Nav = ({ classes, clicks, contacts, titles }) => (
   <nav>
-    { titles.map(title => <NavButton onClick={ clicks[title] } title={ title } />) }
+    { titles.map(title => <NavButton onClick={ () => clicks[title](contacts) } title={ title } />) }
   </nav>
 );
 
