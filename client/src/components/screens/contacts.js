@@ -53,22 +53,21 @@ const ContactList = ({contacts, contactsOpen, onContactClick}) =>
       onContactClick={onContactClick}
     />);
 
-let ContactSearch = ({handleSubmit}) =>
-  (<form onSubmit={handleSubmit}>
-    <Field autoComplete='off' name='contactName' type='text' label='Name: ' component={renderTextField}/>
-    <Button variant='contained' color='primary' type='submit'>Search</Button>
+let ContactSearch = ({handleChange}) =>
+  (<form>
+    <Field onChange={handleChange} autoComplete='off' name='contactName' type='text' label='Name: ' component={renderTextField}/>
   </form>);
 
 ContactSearch = reduxForm({
   form: 'contact-search',
 })(ContactSearch);
 
-const ContactsScreen = (props) => 
-  props.contacts.length === 0
+const ContactsScreen = ({contactsDisplayed, contacts, onSearchClick, ...other}) => 
+  contacts.length === 0
     ? <h2>You have no contacts</h2>
     : (<div>
-        <ContactSearch handleSubmit={() => true}/>
-        <ContactList {...props}/>
+        <ContactSearch onChange={data => onSearchClick(data.contactName, contacts)}/>
+        <ContactList contacts={contactsDisplayed} {...other}/>
       </div>);
         
 

@@ -1,5 +1,6 @@
 export const CLOSE_EDIT_INFO_FORM = 'CLOSE_EDIT_INFO_FORM';
 export const CONTACTS_FETCHED = 'CONTACTS_FETCHED';
+export const CONTACTS_SEARCHED = 'CONTACTS_SEARCHED';
 export const FORM_FIELD_CHANGE = 'FORM_FIELD_CHANGE';
 export const INFO_EDITED = 'INFO_EDITED';
 export const INFO_SHARED = 'INFO_SHARED';
@@ -47,6 +48,13 @@ export const contactsFetched = (contacts, sharees) => (
     contacts,
     sharees,
     type: CONTACTS_FETCHED,
+  }
+);
+
+export const contactsSearched = contacts => (
+  {
+    contacts,
+    type: CONTACTS_SEARCHED,
   }
 );
 
