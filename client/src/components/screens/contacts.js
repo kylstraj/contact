@@ -1,7 +1,11 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
+import { Field, reduxForm } from 'redux-form';
+import Button from '../shared/Button';
+import renderTextField from '../../utils/renderTextField';
 
 const styles = {
   open: {
@@ -40,15 +44,32 @@ let ContactCard = ({isOpen, ...other}) =>
 
 ContactCard = withStyles(styles)(ContactCard);
 
-const ContactsScreen = ({contacts, contactsOpen, onContactClick}) => 
-  contacts.length === 0
+const ContactList = ({contacts, contactsOpen, onContactClick}) => 
+  contacts.map(contact =>
+    <ContactCard 
+      key={contact.username} 
+      contact={contact} 
+      isOpen={contactsOpen[contact.username]}
+      onContactClick={onContactClick}
+    />);
+
+let ContactSearch = ({handleSubmit}) =>
+  (<form onSubmit={handleSubmit}>
+    <Field autoComplete='off' name='contactName' type='text' label='Name: ' component={renderTextField}/>
+    <Button variant='contained' color='primary' type='submit'>Search</Button>
+  </form>);
+
+ContactSearch = reduxForm({
+  form: 'contact-search',
+})(ContactSearch);
+
+const ContactsScreen = (props) => 
+  props.contacts.length === 0
     ? <h2>You have no contacts</h2>
-    : contacts.map(contact =>
-      <ContactCard 
-        key={contact.username} 
-        contact={contact} 
-        isOpen={contactsOpen[contact.username]}
-        onContactClick={onContactClick}
-      />);
+    : (<div>
+        <ContactSearch handleSubmit={() => true}/>
+        <ContactList {...props}/>
+      </div>);
+        
 
 export default ContactsScreen;
