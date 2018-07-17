@@ -19,8 +19,8 @@ const mapDispatchToProps = dispatch => (
     acceptInvitation: inviter => {
       dispatch(startRespondToInvitation(inviter));
       apiFetch(`/api/user/accept?inviter=${inviter}`)
-        .then(() => dispatch(invitationAccepted(inviter)));
-      updateContacts(dispatch);
+        .then(() => dispatch(invitationAccepted(inviter)))
+        .then(() => updateContacts(dispatch));
     },
     rejectInvitation: inviter => {
       dispatch(startRespondToInvitation(inviter));
