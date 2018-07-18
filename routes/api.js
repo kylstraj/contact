@@ -5,6 +5,7 @@ var Relationship = require('../models/relationship');
 var User = require('../models/user');
 var pwd = require('../private/pwd');
 var auth = require('../middleware/auth');
+var parseError = require('../utils/parseError');
 var printSession = require('../middleware/printSession');
 
 router.post('/user', auth, function(req, res, next) {
@@ -17,6 +18,20 @@ router.post('/user', auth, function(req, res, next) {
     phone,
   };
   return res.json(payload);
+});
+
+router.post('/username/:username', function(req, res, next) {
+  const { username } = req.params;
+  User.findOne({username}, function (err, user) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else if (!user) {
+      return res.json({exists: false});
+    } else {
+      return res.json({exists: true});
+    }
+  });
 });
 
 router.post('/user/relationship/:otherUsername', auth, function(req, res, next) {
@@ -295,10 +310,11 @@ router.post('/new_user', function(req, res, next) {
       user.save(err => {
         if (err) {
           console.error(err);
-          return next(err);
+          return next(parseError(err));
+        } else {
+          return res.json({ username, name, email, phone, address });
         }
       });
-      return res.json({ username, name, email, phone, address });
     }
   });
 });

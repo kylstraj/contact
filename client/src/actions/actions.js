@@ -11,6 +11,7 @@ export const INVITATIONS_FETCHED = 'INVITATIONS_FETCHED';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
+export const NEXT_REG_PAGE = 'NEXT_REG_PAGE';
 export const OPEN_EDIT_INFO_FORM = 'OPEN_EDIT_INFO_FORM';
 export const REGISTRATION_FAILED = 'REGISTRATION_FAILED';
 export const REGISTRATION_SUCCEEDED = 'REGISTRATION_SUCCEEDED';
@@ -128,6 +129,14 @@ export const loginSuccess = (credentials, user) => (
 export const logout = () => (
   {
     type: LOGOUT,
+  }
+);
+
+export const nextRegPage = (username, password) => (
+  {
+    password,
+    type: NEXT_REG_PAGE,
+    username,
   }
 );
 

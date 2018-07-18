@@ -3,70 +3,74 @@ import Register from '../components/screens/register';
 import {
   loginSuccess,
   loginFailure,
+  nextRegPage,
   startRegistrationAttempt,
   registrationSucceeded,
   registrationFailed,
 } from '../actions/actions';
+import apiFetch from '../utils/apiFetch';
+
+const isUsernameViable = (username, cb) =>
+  username.length <= 20
+    ? apiFetch(`api/username/${username}`)
+      .then(res => {
+        console.log(res);
+        if (res.exists) {
+          cb(false, 'That username already exists')
+        } else {
+          cb(true);
+        }
+      })
+    : cb(false, 'That username is too long');
 
 const mapStateToProps = state => (
   {
     inProgress: state.registerScreen.inProgress,
     message: state.registerScreen.message,
+    page: state.registerScreen.page,
+    username: state.registerScreen.username,
+    password: state.registerScreen.password,
   }
 );
 
 const mapDispatchToProps = dispatch => (
   {
+    onNextClick: (username, password, confirm) => (
+      password === confirm
+        ? isUsernameViable(username, function(viable, message) {
+            if (!viable) 
+              return dispatch(registrationFailed(message));
+            else
+              return dispatch(nextRegPage(username, password));
+          })
+        : dispatch(registrationFailed('Passwords do not match'))),
     onRegisterClick: (
       username,
       password,
-      confirm,
       name,
       email,
       phone,
       address,
     ) => {
-      if (confirm === password) {
-        dispatch(startRegistrationAttempt());
-        fetch('api/new_user', {
-          body: JSON.stringify({
-            username,
-            password,
-            name,
-            email,
-            phone,
-            address,
-          }),
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
+      dispatch(startRegistrationAttempt());
+      apiFetch('api/new_user', {
+        username,
+        password,
+        name,
+        email,
+        phone,
+        address,
+      })
+        .then(userOrError => {
+          if (userOrError.errors) throw userOrError.errors;
+          const user = userOrError;
+          dispatch(registrationSucceeded({username, password}, user));
+          apiFetch('/login', {username, password})
+            .then(
+              res => dispatch(loginSuccess({username, password}, res))
+            );
         })
-          .then(res => res.json())
-          .then(userOrError => {
-            if (userOrError.error) throw userOrError.error;
-            const user = userOrError;
-            dispatch(registrationSucceeded({username, password}, user));
-            fetch('/login', {
-              body: JSON.stringify({username, password}),
-              credentials: 'include',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-              },
-              method: 'POST'
-            })
-              .then(res => res.json())
-              .then(
-                res => dispatch(loginSuccess({username, password}, res))
-              );
-          })
-          .catch(err => dispatch(registrationFailed(err)))
-      } else {
-        dispatch(registrationFailed('Passwords do not match'));
-      }
+        .catch(errors => dispatch(registrationFailed(errors.join('; '))))
     },
   }
 );

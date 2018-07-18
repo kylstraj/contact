@@ -1,6 +1,7 @@
-const apiFetch = (url) => 
+const apiFetch = (url, body={}) => 
   fetch(url,
     {          
+      body: JSON.stringify(body),
       credentials: 'include',
       headers: {
         'Accept': 'application/json',

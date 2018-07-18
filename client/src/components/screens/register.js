@@ -1,64 +1,81 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Button from '../shared/Button';
 import MessageField from '../MessageField';
 import renderTextField from '../../utils/renderTextField';
 
-let RegisterForm = props => {
+let CredentialsForm = props => {
   const { handleSubmit } = props;
   return (
     <form onSubmit={handleSubmit}>
-      <fieldset>
-        <legend>Your Credentials</legend>
-        <div>
-          <Field autoComplete='off' label='Username' name='username' component={renderTextField} type='text'/>
-        </div>
-        <div>
-          <Field autoComplete='off' label='Password' name='password' component={renderTextField} type='password'/>
-        </div>
-        <div>
-          <Field autoComplete='off' label='Confirm Password' name='confirmPassword' component={renderTextField} type='password'/>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Your Info</legend>
-        <div>
-          <Field autoComplete='off' label='Your Name' name='name' component={renderTextField} type='text'/>
-        </div>
-        <div>
-          <Field autoComplete='off' label='Your Email' name='email' component={renderTextField} type='text'/>
-        </div>
-        <div>
-          <Field autoComplete='off' label='Your Phone Number' name='phone' component={renderTextField} type='text'/>
-        </div>
-        <div>
-          <Field autoComplete='off' label='Your Mailing Address' name='address' component={renderTextField} type='text'/>
-        </div>
-      </fieldset>
+      <legend>Your Credentials</legend>
+      <div>
+        <Field autoComplete='off' label='Username' name='username' component={renderTextField} type='text'/>
+      </div>
+      <div>
+        <Field autoComplete='off' label='Password' name='password' component={renderTextField} type='password'/>
+      </div>
+      <div>
+        <Field autoComplete='off' label='Confirm Password' name='confirmPassword' component={renderTextField} type='password'/>
+      </div>
+      <Button type='submit'>Next</Button>
+    </form>
+  );
+};
+
+CredentialsForm = reduxForm({
+  form: 'registerCredentials',
+})(CredentialsForm);
+
+let InfoForm = props => {
+  const { handleSubmit } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <Field autoComplete='off' label='Your Name' name='name' component={renderTextField} type='text'/>
+      </div>
+      <div>
+        <Field autoComplete='off' label='Your Email' name='email' component={renderTextField} type='text'/>
+      </div>
+      <div>
+        <Field autoComplete='off' label='Your Phone Number' name='phone' component={renderTextField} type='text'/>
+      </div>
+      <div>
+        <Field autoComplete='off' label='Your Mailing Address' name='address' component={renderTextField} type='text'/>
+      </div>
       <Button type='submit'>Register</Button>
     </form>
   );
 };
 
-RegisterForm = reduxForm({
-  form: 'register',
-})(RegisterForm);
+InfoForm = reduxForm({
+  form: 'registerInfo',
+})(InfoForm);
 
-const Register = ({onRegisterClick, message, inProgress}) => (
-  <div>
-    <RegisterForm onSubmit={
-      data => onRegisterClick(
-        data.username, 
-        data.password, 
-        data.confirmPassword, 
-        data.name,
-        data.email, 
-        data.phone, 
-        data.address
-      )
-    }/>
-    <MessageField message={message}/>
-  </div>
-);
+const RegisterForm = ({onNextClick, onRegisterClick, message, inProgress, page, username, password}) => (
+  page === 0
+    ? (<div>
+        <CredentialsForm onSubmit={
+          data => onNextClick(
+            data.username, 
+            data.password, 
+            data.confirmPassword, 
+          )
+        }/>
+        <MessageField message={message}/>
+      </div>)
+    : (<div>
+        <InfoForm onSubmit={
+          data => onRegisterClick(
+            username, 
+            password, 
+            data.name,
+            data.email, 
+            data.phone, 
+            data.address
+          )
+        }/>
+        <MessageField message={message}/>
+      </div>));
 
-export default Register;
+export default RegisterForm;
