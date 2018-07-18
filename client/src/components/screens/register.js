@@ -28,7 +28,7 @@ CredentialsForm = reduxForm({
 })(CredentialsForm);
 
 let InfoForm = props => {
-  const { handleSubmit } = props;
+  const { handleSubmit, onCancelClick } = props;
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -43,7 +43,10 @@ let InfoForm = props => {
       <div>
         <Field autoComplete='off' label='Your Mailing Address' name='address' component={renderTextField} type='text'/>
       </div>
-      <Button type='submit'>Register</Button>
+      <div>
+        <Button type='submit'>Register</Button>
+        <Button onClick={onCancelClick}>Cancel</Button>
+      </div>
     </form>
   );
 };
@@ -52,7 +55,16 @@ InfoForm = reduxForm({
   form: 'registerInfo',
 })(InfoForm);
 
-const RegisterForm = ({onNextClick, onRegisterClick, message, inProgress, page, username, password}) => (
+const RegisterForm = ({
+  onCancelClick,
+  onNextClick, 
+  onRegisterClick, 
+  message, 
+  inProgress, 
+  page, 
+  username, 
+  password,
+}) => (
   page === 0
     ? (<div>
         <CredentialsForm onSubmit={
@@ -74,7 +86,7 @@ const RegisterForm = ({onNextClick, onRegisterClick, message, inProgress, page, 
             data.phone, 
             data.address
           )
-        }/>
+        } onCancelClick={onCancelClick}/>
         <MessageField message={message}/>
       </div>));
 

@@ -1,12 +1,15 @@
 import { connect } from 'react-redux';
 import Register from '../components/screens/register';
 import {
+  cancelRegistration,
   loginSuccess,
   loginFailure,
   nextRegPage,
+  setScreen,
   startRegistrationAttempt,
   registrationSucceeded,
   registrationFailed,
+  SCREENS,
 } from '../actions/actions';
 import apiFetch from '../utils/apiFetch';
 
@@ -35,6 +38,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
+
     onNextClick: (username, password, confirm) => (
       password === confirm
         ? isUsernameViable(username, function(viable, message) {
@@ -44,6 +48,7 @@ const mapDispatchToProps = dispatch => (
               return dispatch(nextRegPage(username, password));
           })
         : dispatch(registrationFailed('Passwords do not match'))),
+
     onRegisterClick: (
       username,
       password,
@@ -71,6 +76,11 @@ const mapDispatchToProps = dispatch => (
             );
         })
         .catch(errors => dispatch(registrationFailed(errors.join('; '))))
+    },
+
+    onCancelClick: () => {
+      dispatch(cancelRegistration());
+      dispatch(setScreen(SCREENS.HOME));
     },
   }
 );

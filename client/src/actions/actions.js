@@ -1,3 +1,4 @@
+export const CANCEL_REGISTRATION = 'CANCEL_REGISTRATION';
 export const CLOSE_EDIT_INFO_FORM = 'CLOSE_EDIT_INFO_FORM';
 export const CONTACTS_FETCHED = 'CONTACTS_FETCHED';
 export const CONTACTS_SEARCHED = 'CONTACTS_SEARCHED';
@@ -36,6 +37,12 @@ export const SCREENS = {
   SEARCH: 'SEARCH',
   USER: 'USER',
 };
+
+export const cancelRegistration = () => (
+  {
+    type: CANCEL_REGISTRATION,
+  }
+);
 
 export const closeEditInfoForm = field => (
   {

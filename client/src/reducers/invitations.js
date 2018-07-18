@@ -7,6 +7,7 @@ import {
   START_RESPOND_TO_INVITATION,
   START_SEND_INVITE,
 } from '../actions/actions';
+import { immutPush, immutAssign } from '../utils/immut';
   
 
 const initialState = {
@@ -59,7 +60,7 @@ const invitationsReducer = (state = initialState, action) => {
             {},
             state.invitations,
             {
-              made: state.invitations.made.slice(0).push(action.invitation.invitee.username),
+              made: immutPush(state.invitations.made, action.invitation),
             }
           ),
         },

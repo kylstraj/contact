@@ -8,6 +8,7 @@ import {
   START_SHARE_INFO,
   USERS_SEARCHED,
 } from '../actions/actions';
+import { immutPush, immutAssign } from '../utils/immut';
 
 const initialState = {
   searchInProgress: false,
@@ -17,12 +18,6 @@ const initialState = {
   requestsInProgress: {},
   requestsMade: {},
 };
-
-const immutPush = (obj, key, val) => {
-  let copy = {...obj};
-  copy[key] = val;
-  return copy;
-}
 
 const searchUsersReducer = (state = initialState, action) => {
   let requestsMadeUpdate = {};
@@ -50,13 +45,15 @@ const searchUsersReducer = (state = initialState, action) => {
         },
       );
     case INVITATION_SENT:
-      requestsMadeUpdate = {};
-      requestsMadeUpdate[action.invitation.invitee.username] = true;
       return Object.assign(
         {},
         state,
         {
-          requestsMade: requestsMadeUpdate,
+          requestsMade: immutAssign(
+            state.requestsMade, 
+            action.invitation.invitee.username, 
+            true,
+          ),
         },
       );
     case START_SEARCH_USERS:
@@ -81,7 +78,7 @@ const searchUsersReducer = (state = initialState, action) => {
         {},
         state,
         {
-          sharesInProgress: immutPush(
+          sharesInProgress: immutAssign(
             state.sharesInProgress,
             action.contactUsername,
             true,
@@ -93,12 +90,12 @@ const searchUsersReducer = (state = initialState, action) => {
         {},
         state,
         {
-          sharesInProgress: immutPush(
+          sharesInProgress: immutAssign(
             state.sharesInProgress,
             action.contactUsername,
             false,
           ),
-          shareResults: immutPush(
+          shareResults: immutAssign(
             state.shareResults,
             action.contactUsername,
             true,

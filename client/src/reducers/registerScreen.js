@@ -1,4 +1,5 @@
 import {
+  CANCEL_REGISTRATION,
   NEXT_REG_PAGE,
   REGISTRATION_FAILED,
   REGISTRATION_SUCCEEDED,
@@ -15,6 +16,8 @@ const initialState = {
 
 const registerScreenReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CANCEL_REGISTRATION:
+      return initialState;
     case NEXT_REG_PAGE:
       return Object.assign(
         {},
