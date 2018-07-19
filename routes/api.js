@@ -534,6 +534,31 @@ router.post('/user/invite/:inviteeUsername', auth, function(req, res, next) {
   });
 });
 
-
+router.post('/user/change_password', auth, function(req, res, next) {
+  const { oldPwd, newPwd } = req.body;
+  const { username } = req.user;
+  User.findOne({ username }, function (err, user) {
+    if (err) {
+      console.error(err);
+      return next(err);
+    } else if (!user) {
+      return res.json({error: `Couldn't find user ${username}`});
+    } else {
+      if (pwd.verify(oldPwd, user.passwordHash)) {
+        user.passwordHash = pwd.hash(newPwd);
+        user.save(err => {
+          if (err) {
+            console.error(err);
+            return next(err);
+          } else {
+            return res.json({success: `Password updated`});
+          }
+        });
+      } else {
+        return res.json({error: `Incorrect password`});
+      }
+    }
+  });
+});
 
 module.exports = router;

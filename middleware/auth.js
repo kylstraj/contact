@@ -10,9 +10,12 @@ module.exports = function(req, res, next) {
     User.findOne({username}, function(err, user) {
       if (err || !user) {
         return res.json({error: 'No user is logged in'});
+      } else if (pwd.verify(password, user.passwordHash)) {
+        req.user = user;
+        return next();
+      } else {
+        return res.json({error: 'Invalid credentials'});
       }
-      req.user = user;
-      return next();
     });
   }
 };
